@@ -1,0 +1,122 @@
+[
+  {
+    "name": "Great Wall of China",
+    "lat": 40.4319,
+    "lon": 116.5704,
+    "facts": "The Great Wall of China is a series of fortifications built along the northern borders of China to protect against invasions. It is over 13,000 miles long."
+  },
+  {
+    "name": "Christ the Redeemer",
+    "lat": -22.9519,
+    "lon": -43.2105,
+    "facts": "Christ the Redeemer is a colossal statue of Jesus Christ in Rio de Janeiro, Brazil. It is 98 feet tall, excluding its 26-foot pedestal."
+  },
+  {
+    "name": "Stonehenge",
+    "lat": 51.1789,
+    "lon": -1.8262,
+    "facts": "Stonehenge is a prehistoric monument in Wiltshire, England. It consists of a ring of standing stones, each around 13 feet high."
+  },
+  {
+    "name": "Eiffel Tower",
+    "lat": 48.8584,
+    "lon": 2.2945,
+    "facts": "The Eiffel Tower is a wrought-iron lattice tower in Paris, France. It was constructed for the 1889 World's Fair and stands at 1,083 feet tall."
+  },
+  {
+    "name": "Mount Everest",
+    "lat": 27.9881,
+    "lon": 86.9250,
+    "facts": "Mount Everest is Earth's highest mountain above sea level, located in the Himalayas. Its peak rises to 29,032 feet."
+  },
+  {
+    "name": "Sydney Opera House",
+    "lat": -33.8568,
+    "lon": 151.2153,
+    "facts": "The Sydney Opera House is a multi-venue performing arts center in Sydney, Australia, known for its distinctive sail-like design."
+  },
+  {
+    "name": "Statue of Liberty",
+    "lat": 40.6892,
+    "lon": -74.0445,
+    "facts": "The Statue of Liberty is a colossal sculpture on Liberty Island in New York Harbor. It was a gift from France to the United States in 1886."
+  },
+  {
+    "name": "Petra",
+    "lat": 30.3285,
+    "lon": 35.4444,
+    "facts": "Petra is a historical and archaeological city in southern Jordan. Famous for its rock-cut architecture, it was the capital of the Nabataean Kingdom."
+  },
+  {
+    "name": "Mount Fuji",
+    "lat": 35.3606,
+    "lon": 138.7274,
+    "facts": "Mount Fuji is an active stratovolcano and the highest peak in Japan at 12,389 feet. It is considered one of Japan's three sacred mountains."
+  },
+  {
+    "name": "Angkor Wat",
+    "lat": 13.4125,
+    "lon": 103.8667,
+    "facts": "Angkor Wat is a massive temple complex in Cambodia. It is the largest religious monument in the world, originally constructed as a Hindu temple."
+  },
+  {
+    "name": "Alhambra",
+    "lat": 37.1761,
+    "lon": -3.5881,
+    "facts": "The Alhambra is a palace and fortress complex in Granada, Spain. It is known for its stunning Islamic architecture and intricate gardens."
+  },
+  {
+    "name": "Grand Canyon",
+    "lat": 36.1069,
+    "lon": -112.1129,
+    "facts": "The Grand Canyon is a steep-sided canyon carved by the Colorado River in Arizona, USA. It is 277 miles long and up to 18 miles wide."
+  },
+  {
+    "name": "Mount Kilimanjaro",
+    "lat": -3.0674,
+    "lon": 37.3556,
+    "facts": "Mount Kilimanjaro is a dormant volcano in Tanzania and the highest mountain in Africa at 19,341 feet above sea level."
+  },
+  {
+    "name": "Great Barrier Reef",
+    "lat": -18.2871,
+    "lon": 147.6992,
+    "facts": "The Great Barrier Reef, located off the coast of Queensland, Australia, is the largest coral reef system in the world, spanning 1,400 miles."
+  },
+  {
+    "name": "Niagara Falls",
+    "lat": 43.0962,
+    "lon": -79.0377,
+    "facts": "Niagara Falls is a group of three waterfalls at the border of Ontario, Canada, and New York, USA. The combined falls have the highest flow rate of any waterfall in North America."
+  },
+  {
+    "name": "Tower of London",
+    "lat": 51.5081,
+    "lon": -0.0759,
+    "facts": "The Tower of London is a historic castle located on the north bank of the River Thames in central London. It was founded in 1066 as part of the Norman Conquest of England."
+  },
+  {
+    "name": "Palace of Versailles",
+    "lat": 48.8049,
+    "lon": 2.1204,
+    "facts": "The Palace of Versailles is a former royal residence located in Versailles, France. It was the principal royal residence of France from 1682 until the French Revolution."
+  },
+  {
+    "name": "Burj Khalifa",
+    "lat": 25.1972,
+    "lon": 55.2744,
+    "facts": "The Burj Khalifa is a skyscraper in Dubai, United Arab Emirates. It is the tallest structure in the world, standing at 2,717 feet tall."
+  },
+  {
+    "name": "Notre-Dame Cathedral",
+    "lat": 48.8527,
+    "lon": 2.3508,
+    "facts": "Notre-Dame Cathedral is a medieval Catholic cathedral in Paris, France. It is widely considered to be one of the finest examples of French Gothic architecture."
+  },
+  {
+    "name": "Sagrada Familia",
+    "lat": 41.4036,
+    "lon": 2.1744,
+    "facts": "The Sagrada Familia is a large unfinished Roman Catholic minor basilica in Barcelona, Spain. Designed by architect Antoni Gaudí, construction began in 1882 and is still ongoing."
+  }
+]

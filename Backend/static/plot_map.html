@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    
+        <script>
+            L_NO_TOUCH = false;
+            L_DISABLE_3D = false;
+        </script>
+    
+    <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
+    <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_6ea1a031ce32c06f67d7ffe8367ef8be {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+        
+</head>
+<body>
+    
+    
+            <div class="folium-map" id="map_6ea1a031ce32c06f67d7ffe8367ef8be" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_6ea1a031ce32c06f67d7ffe8367ef8be = L.map(
+                "map_6ea1a031ce32c06f67d7ffe8367ef8be",
+                {
+                    center: [19.1345092, 72.8158438],
+                    crs: L.CRS.EPSG3857,
+                    zoom: 13,
+                    zoomControl: true,
+                    preferCanvas: false,
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_55450fe037f3f1e0e632aef6f56da7d4 = L.tileLayer(
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {"attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors", "detectRetina": false, "maxNativeZoom": 19, "maxZoom": 19, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
+            );
+        
+    
+            tile_layer_55450fe037f3f1e0e632aef6f56da7d4.addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+            var polygon_2db1261bdd47c36e4516a6090fa028dc = L.polygon(
+                [[19.1345092, 72.8158438], [19.1347877, 72.8163211], [19.1350142, 72.8166868], [19.1350255, 72.8168641], [19.1349933, 72.8169425], [19.1347467, 72.8168772], [19.1342226, 72.8168186], [19.1341801, 72.8168182], [19.1334265, 72.8168111], [19.1333952, 72.8169388], [19.1332228, 72.8163773], [19.1345092, 72.8158438]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+            var marker_1d823399e7a1feab3a6781a027c730a4 = L.marker(
+                [19.1345092, 72.8158438],
+                {}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+        var popup_4ff85bdf01f2e5bf2f7cdfa4644ee9f2 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_31e5135924fc13a4c28b7763078e8583 = $(`<div id="html_31e5135924fc13a4c28b7763078e8583" style="width: 100.0%; height: 100.0%;">Recommendations: empty plot, residential buildings, hospital</div>`)[0];
+                popup_4ff85bdf01f2e5bf2f7cdfa4644ee9f2.setContent(html_31e5135924fc13a4c28b7763078e8583);
+            
+        
+
+        marker_1d823399e7a1feab3a6781a027c730a4.bindPopup(popup_4ff85bdf01f2e5bf2f7cdfa4644ee9f2)
+        ;
+
+        
+    
+    
+            var polygon_aba102fb017bd7fe0daa6038df5d4b75 = L.polygon(
+                [[19.1313204, 72.8193529], [19.1314054, 72.8192374], [19.1319734, 72.8191709], [19.1331285, 72.8189972], [19.1336149, 72.8189086], [19.1336522, 72.8192477], [19.1337227, 72.8202429], [19.1337612, 72.8209971], [19.1304057, 72.8213643], [19.1306176, 72.8204513], [19.131291, 72.8204299], [19.13147, 72.8196174], [19.1314586, 72.8194821], [19.1313204, 72.8193529]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+            var marker_d461397e80d9b479db0d5ab631f76369 = L.marker(
+                [19.1313204, 72.8193529],
+                {}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+        var popup_38a4b1932542931cb68af9c8e419b28e = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_8e5d5f36d075b5249c6fc8f30b00b0f9 = $(`<div id="html_8e5d5f36d075b5249c6fc8f30b00b0f9" style="width: 100.0%; height: 100.0%;">Recommendations: residential buildings, empty plot, hospital</div>`)[0];
+                popup_38a4b1932542931cb68af9c8e419b28e.setContent(html_8e5d5f36d075b5249c6fc8f30b00b0f9);
+            
+        
+
+        marker_d461397e80d9b479db0d5ab631f76369.bindPopup(popup_38a4b1932542931cb68af9c8e419b28e)
+        ;
+
+        
+    
+    
+            var polygon_d6988545d57512224d96b3c783f28be3 = L.polygon(
+                [[19.1348499, 72.8246893], [19.1348179, 72.824382], [19.1352025, 72.82434], [19.1352279, 72.8246252], [19.1350982, 72.8246732], [19.1348499, 72.8246893]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+            var marker_83c6c2fc8213acbc70751d7ffad7ff3c = L.marker(
+                [19.1348499, 72.8246893],
+                {}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+        var popup_7069bc9e5afcd12d8c90aee7f547c4b8 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_f74daac0a051d419a861684d98fc2748 = $(`<div id="html_f74daac0a051d419a861684d98fc2748" style="width: 100.0%; height: 100.0%;">Recommendations: empty plot, residential buildings, hospital</div>`)[0];
+                popup_7069bc9e5afcd12d8c90aee7f547c4b8.setContent(html_f74daac0a051d419a861684d98fc2748);
+            
+        
+
+        marker_83c6c2fc8213acbc70751d7ffad7ff3c.bindPopup(popup_7069bc9e5afcd12d8c90aee7f547c4b8)
+        ;
+
+        
+    
+    
+            var polygon_ced0aa18efbbc2a671bbe37fba8f8da9 = L.polygon(
+                [[19.1375741, 72.8305497], [19.1376132, 72.8308606], [19.1372699, 72.8308895], [19.1372397, 72.8305884], [19.1375741, 72.8305497]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+            var marker_893cf75cb0fbb38c19e230067e682f44 = L.marker(
+                [19.1375741, 72.8305497],
+                {}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+        var popup_33a575cdf4c0cbf27849654f430af08b = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_13d311fa2eaf4714b0eadff0c516f2be = $(`<div id="html_13d311fa2eaf4714b0eadff0c516f2be" style="width: 100.0%; height: 100.0%;">Recommendations: empty plot, residential buildings, hospital</div>`)[0];
+                popup_33a575cdf4c0cbf27849654f430af08b.setContent(html_13d311fa2eaf4714b0eadff0c516f2be);
+            
+        
+
+        marker_893cf75cb0fbb38c19e230067e682f44.bindPopup(popup_33a575cdf4c0cbf27849654f430af08b)
+        ;
+
+        
+    
+    
+            var polygon_672cf458cbecb69593e09ef9f8e75345 = L.polygon(
+                [[19.1361222, 72.8262879], [19.1360705, 72.8258026], [19.1366594, 72.8258105], [19.1361222, 72.8262879]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+            var marker_ae6581067081859173e67f933e16198f = L.marker(
+                [19.1361222, 72.8262879],
+                {}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+        var popup_b4cc6dff37d0bdf75c7355bcf51c80f8 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_05e8cf513f2e5ecb42f0aa39a8cd60dc = $(`<div id="html_05e8cf513f2e5ecb42f0aa39a8cd60dc" style="width: 100.0%; height: 100.0%;">Recommendations: empty plot, residential buildings, hospital</div>`)[0];
+                popup_b4cc6dff37d0bdf75c7355bcf51c80f8.setContent(html_05e8cf513f2e5ecb42f0aa39a8cd60dc);
+            
+        
+
+        marker_ae6581067081859173e67f933e16198f.bindPopup(popup_b4cc6dff37d0bdf75c7355bcf51c80f8)
+        ;
+
+        
+    
+    
+            var polygon_ee1fc37f845204e218278ad4bb402ac9 = L.polygon(
+                [[19.1342824, 72.8339983], [19.134244, 72.8344605], [19.1336232, 72.8344041], [19.1336663, 72.8339267], [19.1342824, 72.8339983]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+            var marker_049a8ce77bfdea40c42e730d01dc1156 = L.marker(
+                [19.1342824, 72.8339983],
+                {}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+        var popup_9af26c2af72904b052c6bc7abeccc53f = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_18a0dc7ce8164444e424cba9c553b5ce = $(`<div id="html_18a0dc7ce8164444e424cba9c553b5ce" style="width: 100.0%; height: 100.0%;">Recommendations: empty plot, hospital, latitude</div>`)[0];
+                popup_9af26c2af72904b052c6bc7abeccc53f.setContent(html_18a0dc7ce8164444e424cba9c553b5ce);
+            
+        
+
+        marker_049a8ce77bfdea40c42e730d01dc1156.bindPopup(popup_9af26c2af72904b052c6bc7abeccc53f)
+        ;
+
+        
+    
+    
+            var polygon_824be736bf4a2030d619fe0efa2a0b56 = L.polygon(
+                [[19.1856339, 72.828439], [19.1848334, 72.8283746], [19.1844342, 72.828457], [19.1843987, 72.8295835], [19.1855681, 72.8296567], [19.1856339, 72.828439]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+            var marker_c8caafe404e5b363582938a9f1f399b5 = L.marker(
+                [19.1856339, 72.828439],
+                {}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+        var popup_07e7e093e15ae5d675c632b9f5f026dc = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_93a6bd021d2d790523ccc51c9dc2a275 = $(`<div id="html_93a6bd021d2d790523ccc51c9dc2a275" style="width: 100.0%; height: 100.0%;">Recommendations: empty plot, latitude, hospital</div>`)[0];
+                popup_07e7e093e15ae5d675c632b9f5f026dc.setContent(html_93a6bd021d2d790523ccc51c9dc2a275);
+            
+        
+
+        marker_c8caafe404e5b363582938a9f1f399b5.bindPopup(popup_07e7e093e15ae5d675c632b9f5f026dc)
+        ;
+
+        
+    
+    
+            var polygon_4ec8685116316b350f47d144bfbb42a8 = L.polygon(
+                [[19.1855225, 72.8309654], [19.1843166, 72.8308903], [19.1842862, 72.8323011], [19.1854262, 72.8324996], [19.1855225, 72.8309654]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+            var marker_63a9bffe3b0dfc9825926ae922927fa0 = L.marker(
+                [19.1855225, 72.8309654],
+                {}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+        var popup_4ee908b4aac44dc84a944eea12b5d1ed = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_52e0b2d52f5f257acc20de037f6c9acd = $(`<div id="html_52e0b2d52f5f257acc20de037f6c9acd" style="width: 100.0%; height: 100.0%;">Recommendations: empty plot, hospital, latitude</div>`)[0];
+                popup_4ee908b4aac44dc84a944eea12b5d1ed.setContent(html_52e0b2d52f5f257acc20de037f6c9acd);
+            
+        
+
+        marker_63a9bffe3b0dfc9825926ae922927fa0.bindPopup(popup_4ee908b4aac44dc84a944eea12b5d1ed)
+        ;
+
+        
+    
+    
+            var polygon_6244a0a526986b64e91edb9b717e57d1 = L.polygon(
+                [[19.1415141, 72.8138409], [19.1410909, 72.8129172], [19.140265, 72.8132845], [19.1406716, 72.8141725], [19.1407086, 72.8142392], [19.1415141, 72.8138409]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+            var marker_daae67c0ef6bfd28999726de76de7c7b = L.marker(
+                [19.1415141, 72.8138409],
+                {}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+        var popup_bd82a677f500d90557f419acc792b82c = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_741a7d3d11f8969c3dd9589ae7dc3027 = $(`<div id="html_741a7d3d11f8969c3dd9589ae7dc3027" style="width: 100.0%; height: 100.0%;">Recommendations: empty plot, latitude, school</div>`)[0];
+                popup_bd82a677f500d90557f419acc792b82c.setContent(html_741a7d3d11f8969c3dd9589ae7dc3027);
+            
+        
+
+        marker_daae67c0ef6bfd28999726de76de7c7b.bindPopup(popup_bd82a677f500d90557f419acc792b82c)
+        ;
+
+        
+    
+    
+            var polygon_c73c9196e846b6fd579c80cf8d92e1db = L.polygon(
+                [[19.1755693, 72.8315716], [19.1753817, 72.8326711], [19.1750954, 72.832427], [19.1750473, 72.832368], [19.1750245, 72.8323277], [19.1750144, 72.8322422], [19.1751133, 72.8316896], [19.1751462, 72.8316119], [19.1752197, 72.8315716], [19.1752829, 72.8315579], [19.1755693, 72.8315716]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+            var marker_98a901d7e3cbf75937023ffa0f271729 = L.marker(
+                [19.1755693, 72.8315716],
+                {}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+        var popup_bc7957d77351db369d8698e2759d4c6b = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_82a43dcfbaa482f48dda0ee77661b9b4 = $(`<div id="html_82a43dcfbaa482f48dda0ee77661b9b4" style="width: 100.0%; height: 100.0%;">Recommendations: empty plot, latitude, hospital</div>`)[0];
+                popup_bc7957d77351db369d8698e2759d4c6b.setContent(html_82a43dcfbaa482f48dda0ee77661b9b4);
+            
+        
+
+        marker_98a901d7e3cbf75937023ffa0f271729.bindPopup(popup_bc7957d77351db369d8698e2759d4c6b)
+        ;
+
+        
+    
+    
+            var polygon_e18eb7983b18d6b2ce55e95ff039f021 = L.polygon(
+                [[19.1763469, 72.8316145], [19.1762813, 72.8320598], [19.1778036, 72.8323492], [19.1777909, 72.8335028], [19.1785129, 72.8337332], [19.178409, 72.8314429], [19.1778922, 72.8316306], [19.1763469, 72.8316145]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+            var marker_4a5083daefa8908b2a4107b9a0021fac = L.marker(
+                [19.1763469, 72.8316145],
+                {}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+        var popup_73fa9b9bba6a88b1a4a279340e04aa40 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_a7c9952cb90de30e737d78004c6eac8f = $(`<div id="html_a7c9952cb90de30e737d78004c6eac8f" style="width: 100.0%; height: 100.0%;">Recommendations: empty plot, latitude, hospital</div>`)[0];
+                popup_73fa9b9bba6a88b1a4a279340e04aa40.setContent(html_a7c9952cb90de30e737d78004c6eac8f);
+            
+        
+
+        marker_4a5083daefa8908b2a4107b9a0021fac.bindPopup(popup_73fa9b9bba6a88b1a4a279340e04aa40)
+        ;
+
+        
+    
+    
+            var polygon_c8725287bbea7bd6090af81cdf651d8c = L.polygon(
+                [[19.1739707, 72.8313812], [19.174219, 72.8314295], [19.174447, 72.8314643], [19.1745811, 72.8314748], [19.1747052, 72.8314882], [19.1747738, 72.8314992], [19.174837, 72.8315419], [19.1748801, 72.8315928], [19.1748827, 72.8316896], [19.1747812, 72.8322285], [19.1747154, 72.8322821], [19.1746572, 72.8322931], [19.1738465, 72.8321188], [19.1739707, 72.8313812]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+            var marker_3304bf0da5bc41521e397867078fe32e = L.marker(
+                [19.1739707, 72.8313812],
+                {}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+        var popup_542d74948492b109212e0cebb1c24a33 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_29cd9658b0c8444e3af2e39f1825a511 = $(`<div id="html_29cd9658b0c8444e3af2e39f1825a511" style="width: 100.0%; height: 100.0%;">Recommendations: empty plot, latitude, hospital</div>`)[0];
+                popup_542d74948492b109212e0cebb1c24a33.setContent(html_29cd9658b0c8444e3af2e39f1825a511);
+            
+        
+
+        marker_3304bf0da5bc41521e397867078fe32e.bindPopup(popup_542d74948492b109212e0cebb1c24a33)
+        ;
+
+        
+    
+    
+            var polygon_4846de6ec26a6bb29615e415a9170d51 = L.polygon(
+                [[19.1727546, 72.8309869], [19.1729825, 72.8311073], [19.1735121, 72.8312819], [19.1732029, 72.8315284], [19.1731548, 72.8320112], [19.1725317, 72.8318801], [19.1725342, 72.8317299], [19.172676, 72.8310778], [19.1727546, 72.8309869]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+            var marker_540488fbd0e59bee6a13fae82b59287c = L.marker(
+                [19.1727546, 72.8309869],
+                {}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+        var popup_99fe138d62f6f68b4f1ea2ff72a54831 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_33e927d7735115dc11fc4a92d623e022 = $(`<div id="html_33e927d7735115dc11fc4a92d623e022" style="width: 100.0%; height: 100.0%;">Recommendations: empty plot, latitude, hospital</div>`)[0];
+                popup_99fe138d62f6f68b4f1ea2ff72a54831.setContent(html_33e927d7735115dc11fc4a92d623e022);
+            
+        
+
+        marker_540488fbd0e59bee6a13fae82b59287c.bindPopup(popup_99fe138d62f6f68b4f1ea2ff72a54831)
+        ;
+
+        
+    
+    
+            var polygon_a73577ed5d3bffce475aa33538d7ade3 = L.polygon(
+                [[19.1714829, 72.8359571], [19.1714398, 72.8359195], [19.1709939, 72.8357774], [19.17086, 72.836397], [19.1709888, 72.8363353], [19.1713967, 72.8361234], [19.1714753, 72.836051], [19.1714829, 72.8359571]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+            var marker_338e4fe0ba43fa012b5a20dc1cf7c961 = L.marker(
+                [19.1714829, 72.8359571],
+                {}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+        var popup_a15b45def355131c4a80f46a8f2872db = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_8fe1248bbcb7ae127800977d945dd0de = $(`<div id="html_8fe1248bbcb7ae127800977d945dd0de" style="width: 100.0%; height: 100.0%;">Recommendations: empty plot, hospital, latitude</div>`)[0];
+                popup_a15b45def355131c4a80f46a8f2872db.setContent(html_8fe1248bbcb7ae127800977d945dd0de);
+            
+        
+
+        marker_338e4fe0ba43fa012b5a20dc1cf7c961.bindPopup(popup_a15b45def355131c4a80f46a8f2872db)
+        ;
+
+        
+    
+    
+            var polygon_9926a1c3b65f873ca491cb65d94b320e = L.polygon(
+                [[19.1698768, 72.8324085], [19.1679513, 72.8323173], [19.1680461, 72.8313724], [19.1685276, 72.8314], [19.1689783, 72.8314209], [19.1693485, 72.831466], [19.1705445, 72.8315901], [19.1705396, 72.8324245], [19.1699147, 72.8324094], [19.1698768, 72.8324085]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+            var marker_4d8e6ff4ee1912615de1f9ff031fa975 = L.marker(
+                [19.1698768, 72.8324085],
+                {}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+        var popup_5cb4b5c32dba56f54171de0b1449e5aa = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_a87aa102baa2c4a40d7915864a7624f8 = $(`<div id="html_a87aa102baa2c4a40d7915864a7624f8" style="width: 100.0%; height: 100.0%;">Recommendations: empty plot, hospital, latitude</div>`)[0];
+                popup_5cb4b5c32dba56f54171de0b1449e5aa.setContent(html_a87aa102baa2c4a40d7915864a7624f8);
+            
+        
+
+        marker_4d8e6ff4ee1912615de1f9ff031fa975.bindPopup(popup_5cb4b5c32dba56f54171de0b1449e5aa)
+        ;
+
+        
+    
+    
+            var polygon_c0f84148486fe41922a56ccc791c489d = L.polygon(
+                [[19.1474002, 72.8299865], [19.1473714, 72.830463], [19.1472701, 72.8304553], [19.147004, 72.830435], [19.1469077, 72.8304277], [19.1459323, 72.8303535], [19.1459369, 72.8301235], [19.1463331, 72.8301503], [19.1463842, 72.8299055], [19.1469372, 72.8299552], [19.1474002, 72.8299865]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+            var marker_794b2c2865953631b1d45894367597ab = L.marker(
+                [19.1474002, 72.8299865],
+                {}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+        var popup_d740e6ea8ad73c5009cd74d436be9870 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_a1e0f27fab5d22d7fc4dc92ffef29232 = $(`<div id="html_a1e0f27fab5d22d7fc4dc92ffef29232" style="width: 100.0%; height: 100.0%;">Recommendations: empty plot, hospital, latitude</div>`)[0];
+                popup_d740e6ea8ad73c5009cd74d436be9870.setContent(html_a1e0f27fab5d22d7fc4dc92ffef29232);
+            
+        
+
+        marker_794b2c2865953631b1d45894367597ab.bindPopup(popup_d740e6ea8ad73c5009cd74d436be9870)
+        ;
+
+        
+    
+    
+            var polygon_304f34880dc9f4565a7b1cc4fb5ac1f3 = L.polygon(
+                [[19.1498928, 72.8320497], [19.1498446, 72.8324684], [19.1493831, 72.8324089], [19.1494312, 72.8319903], [19.1498928, 72.8320497]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+            var marker_4a2793652c16869c63ba265dd0e657b7 = L.marker(
+                [19.1498928, 72.8320497],
+                {}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+        var popup_db22434073ad10fd4ed521b614b23cfe = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_cc1cf62bf02926d2cb0942135e8fd62a = $(`<div id="html_cc1cf62bf02926d2cb0942135e8fd62a" style="width: 100.0%; height: 100.0%;">Recommendations: empty plot, hospital, latitude</div>`)[0];
+                popup_db22434073ad10fd4ed521b614b23cfe.setContent(html_cc1cf62bf02926d2cb0942135e8fd62a);
+            
+        
+
+        marker_4a2793652c16869c63ba265dd0e657b7.bindPopup(popup_db22434073ad10fd4ed521b614b23cfe)
+        ;
+
+        
+    
+    
+            var polygon_d4eb8733bfced83e818e8518a3dcd1e6 = L.polygon(
+                [[19.1515077, 72.8360214], [19.1508507, 72.8361231], [19.1510035, 72.8370272], [19.1509401, 72.8388699], [19.1509723, 72.8388777], [19.1513101, 72.8386366], [19.1521556, 72.8374508], [19.1520854, 72.8366893], [19.1517383, 72.8365015], [19.1515077, 72.8360214]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+            var marker_7b1db6f995ada513e62a2464a87889b2 = L.marker(
+                [19.1515077, 72.8360214],
+                {}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+        var popup_c348fa0154dbd8b7a7063be04864e457 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_6afbf7bc55495f6fd687e6c5da9c7088 = $(`<div id="html_6afbf7bc55495f6fd687e6c5da9c7088" style="width: 100.0%; height: 100.0%;">Recommendations: empty plot, hospital, latitude</div>`)[0];
+                popup_c348fa0154dbd8b7a7063be04864e457.setContent(html_6afbf7bc55495f6fd687e6c5da9c7088);
+            
+        
+
+        marker_7b1db6f995ada513e62a2464a87889b2.bindPopup(popup_c348fa0154dbd8b7a7063be04864e457)
+        ;
+
+        
+    
+    
+            var polygon_b5f35bb1b761ef0b5b6c56692974a6ec = L.polygon(
+                [[19.1437578, 72.8101422], [19.1429459, 72.8101677], [19.1428217, 72.8102401], [19.1427432, 72.8102723], [19.1426038, 72.8102777], [19.1425202, 72.8102911], [19.1425253, 72.8104574], [19.1425329, 72.8105673], [19.1425329, 72.8106478], [19.1424975, 72.8107739], [19.1428598, 72.8109322], [19.1437783, 72.8107881], [19.1437578, 72.8101422]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+            var marker_dbc6c7ce329713df5c076d8e88edcc1d = L.marker(
+                [19.1437578, 72.8101422],
+                {}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+        var popup_3126b5a0b6742c79a8e04180a0c859d0 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_b02be2f8783464c13a944bc4a816df46 = $(`<div id="html_b02be2f8783464c13a944bc4a816df46" style="width: 100.0%; height: 100.0%;">Recommendations: empty plot, latitude, hospital</div>`)[0];
+                popup_3126b5a0b6742c79a8e04180a0c859d0.setContent(html_b02be2f8783464c13a944bc4a816df46);
+            
+        
+
+        marker_dbc6c7ce329713df5c076d8e88edcc1d.bindPopup(popup_3126b5a0b6742c79a8e04180a0c859d0)
+        ;
+
+        
+    
+    
+            var polygon_17af790a6513592a476c3e375dc65b50 = L.polygon(
+                [[19.1267609, 72.825224], [19.1265536, 72.826102], [19.1260435, 72.8263363], [19.1259202, 72.8264104], [19.1254943, 72.82706], [19.125357, 72.8271519], [19.1247012, 72.8265943], [19.125144, 72.8260337], [19.125584, 72.825485], [19.125909, 72.8250757], [19.1267609, 72.825224]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+            var marker_0dd458911206b908c8e7d244f322ce25 = L.marker(
+                [19.1267609, 72.825224],
+                {}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+        var popup_381081646efa4609390c1aa99780fbdc = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_5ae03b82561821fd1d07953a424bc6b6 = $(`<div id="html_5ae03b82561821fd1d07953a424bc6b6" style="width: 100.0%; height: 100.0%;">Recommendations: residential buildings, empty plot, hospital</div>`)[0];
+                popup_381081646efa4609390c1aa99780fbdc.setContent(html_5ae03b82561821fd1d07953a424bc6b6);
+            
+        
+
+        marker_0dd458911206b908c8e7d244f322ce25.bindPopup(popup_381081646efa4609390c1aa99780fbdc)
+        ;
+
+        
+    
+    
+            var polygon_a7d6f052c77c1a8cf56a2658c182b574 = L.polygon(
+                [[19.1178181, 72.8231578], [19.1176432, 72.8239276], [19.1170482, 72.8250876], [19.1166751, 72.8254726], [19.1165433, 72.8255906], [19.1164697, 72.8256334], [19.1162775, 72.8257113], [19.1159248, 72.8257541], [19.115484, 72.8246411], [19.1153611, 72.8235349], [19.1164153, 72.8232667], [19.1175418, 72.8228494], [19.1177066, 72.8228347], [19.1177132, 72.8229452], [19.1177943, 72.8230417], [19.1178181, 72.8231578]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+            var marker_2c5ab3b2a01e760838d328afe8e85f8e = L.marker(
+                [19.1178181, 72.8231578],
+                {}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+        var popup_a70d0643548c6f0f87a55ce514d39dba = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_0e4979cf9e074561343ff66db7c65153 = $(`<div id="html_0e4979cf9e074561343ff66db7c65153" style="width: 100.0%; height: 100.0%;">Recommendations: residential buildings, empty plot, latitude</div>`)[0];
+                popup_a70d0643548c6f0f87a55ce514d39dba.setContent(html_0e4979cf9e074561343ff66db7c65153);
+            
+        
+
+        marker_2c5ab3b2a01e760838d328afe8e85f8e.bindPopup(popup_a70d0643548c6f0f87a55ce514d39dba)
+        ;
+
+        
+    
+    
+            var polygon_ac74801eb1788067f640a5a78437cfcf = L.polygon(
+                [[19.1206311, 72.8274598], [19.1205247, 72.8280901], [19.1213204, 72.8281679], [19.1214522, 72.8276905], [19.1206311, 72.8274598]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+            var marker_daa46dd80fef6806ec926356ebca1931 = L.marker(
+                [19.1206311, 72.8274598],
+                {}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+        var popup_6cef2d9f10e38da05f4b98b52db640d0 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_25f539b056b04dd5da7b27538bdd8209 = $(`<div id="html_25f539b056b04dd5da7b27538bdd8209" style="width: 100.0%; height: 100.0%;">Recommendations: residential buildings, empty plot, hospital</div>`)[0];
+                popup_6cef2d9f10e38da05f4b98b52db640d0.setContent(html_25f539b056b04dd5da7b27538bdd8209);
+            
+        
+
+        marker_daa46dd80fef6806ec926356ebca1931.bindPopup(popup_6cef2d9f10e38da05f4b98b52db640d0)
+        ;
+
+        
+    
+    
+            var polygon_a0293723f2cdb82665a493549bc93f89 = L.polygon(
+                [[19.1225318, 72.8307106], [19.1224532, 72.8311478], [19.1214294, 72.8311478], [19.1214699, 72.8304666], [19.1225318, 72.8307106]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+            var marker_87b1703b846120afdaba830f6edcae21 = L.marker(
+                [19.1225318, 72.8307106],
+                {}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+        var popup_ab4523e30b99d8fd9b30e1a46a27514a = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_a34e4bb9a7c1b8182e4bd07ab5712ab3 = $(`<div id="html_a34e4bb9a7c1b8182e4bd07ab5712ab3" style="width: 100.0%; height: 100.0%;">Recommendations: residential buildings, empty plot, hospital</div>`)[0];
+                popup_ab4523e30b99d8fd9b30e1a46a27514a.setContent(html_a34e4bb9a7c1b8182e4bd07ab5712ab3);
+            
+        
+
+        marker_87b1703b846120afdaba830f6edcae21.bindPopup(popup_ab4523e30b99d8fd9b30e1a46a27514a)
+        ;
+
+        
+    
+    
+            var polygon_46c233fd44ea997a4d718bee2d9a2746 = L.polygon(
+                [[19.127984, 72.8311507], [19.1278754, 72.8317057], [19.1274856, 72.831634], [19.1275813, 72.8310875], [19.1277815, 72.8311113], [19.1279089, 72.8311359], [19.127984, 72.8311507]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+            var marker_fb80836e34eddbcd89b8705673dbf9e1 = L.marker(
+                [19.127984, 72.8311507],
+                {}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+        var popup_24ede56da3325ad593c1d661f53303bc = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_dc6eac495b22ad2c4f27f630fc109504 = $(`<div id="html_dc6eac495b22ad2c4f27f630fc109504" style="width: 100.0%; height: 100.0%;">Recommendations: empty plot, residential buildings, hospital</div>`)[0];
+                popup_24ede56da3325ad593c1d661f53303bc.setContent(html_dc6eac495b22ad2c4f27f630fc109504);
+            
+        
+
+        marker_fb80836e34eddbcd89b8705673dbf9e1.bindPopup(popup_24ede56da3325ad593c1d661f53303bc)
+        ;
+
+        
+    
+    
+            var polygon_8ce0896560b9b75ae18bc31661331139 = L.polygon(
+                [[19.1353923, 72.8208832], [19.1350817, 72.8215262], [19.1349742, 72.8207464], [19.1352251, 72.8207061], [19.1352388, 72.8207806], [19.135291, 72.8207759], [19.1353112, 72.8208671], [19.1354025, 72.820851], [19.1353923, 72.8208832]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+            var marker_080f50e82cdf03b15b81b235eb38467d = L.marker(
+                [19.1353923, 72.8208832],
+                {}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+        var popup_201b405fc056b0d376a1cfc3ae58150d = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_b15bcefc2e376ffc5b36ec85edb65c36 = $(`<div id="html_b15bcefc2e376ffc5b36ec85edb65c36" style="width: 100.0%; height: 100.0%;">Recommendations: empty plot, residential buildings, hospital</div>`)[0];
+                popup_201b405fc056b0d376a1cfc3ae58150d.setContent(html_b15bcefc2e376ffc5b36ec85edb65c36);
+            
+        
+
+        marker_080f50e82cdf03b15b81b235eb38467d.bindPopup(popup_201b405fc056b0d376a1cfc3ae58150d)
+        ;
+
+        
+    
+    
+            var polygon_2b16e949c4dc286777bda31702544b0d = L.polygon(
+                [[19.1463006, 72.8220777], [19.1470521, 72.8226672], [19.1468488, 72.8229575], [19.1460973, 72.8223681], [19.1463006, 72.8220777]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+            var marker_2eedd02708f33526265edb866453b58b = L.marker(
+                [19.1463006, 72.8220777],
+                {}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+        var popup_0abb3635d3b5b9f697d0edff14aaeae7 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_6752c86dcb9d95570d451c5202b8cd8b = $(`<div id="html_6752c86dcb9d95570d451c5202b8cd8b" style="width: 100.0%; height: 100.0%;">Recommendations: empty plot, hospital, latitude</div>`)[0];
+                popup_0abb3635d3b5b9f697d0edff14aaeae7.setContent(html_6752c86dcb9d95570d451c5202b8cd8b);
+            
+        
+
+        marker_2eedd02708f33526265edb866453b58b.bindPopup(popup_0abb3635d3b5b9f697d0edff14aaeae7)
+        ;
+
+        
+    
+    
+            var polygon_f823948f29d89c680e80e76558a2ee09 = L.polygon(
+                [[19.1834249, 72.831137], [19.1840841, 72.8311436], [19.1840895, 72.8308896], [19.1841908, 72.8286615], [19.1841705, 72.8285918], [19.1841346, 72.8285786], [19.1824119, 72.8297266], [19.1815607, 72.8301772], [19.1800864, 72.8306976], [19.1804213, 72.8313652], [19.1825492, 72.8317353], [19.183355, 72.8320028], [19.1834249, 72.831137]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+            var marker_9a06f2e1e19158d7a9abbdff616bf453 = L.marker(
+                [19.1834249, 72.831137],
+                {}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+        var popup_45d1a16fcdd10cbd6c73bd999ebddb7d = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_88899267c98f426113f08d5e41e664c4 = $(`<div id="html_88899267c98f426113f08d5e41e664c4" style="width: 100.0%; height: 100.0%;">Recommendations: empty plot, hospital, latitude</div>`)[0];
+                popup_45d1a16fcdd10cbd6c73bd999ebddb7d.setContent(html_88899267c98f426113f08d5e41e664c4);
+            
+        
+
+        marker_9a06f2e1e19158d7a9abbdff616bf453.bindPopup(popup_45d1a16fcdd10cbd6c73bd999ebddb7d)
+        ;
+
+        
+    
+    
+            var polygon_feb72614e7ee0bf85eb1d42fee66873c = L.polygon(
+                [[19.1790837, 72.8311184], [19.1797626, 72.8308234], [19.1798989, 72.8307834], [19.1799698, 72.8307941], [19.1801983, 72.8312579], [19.1793568, 72.8317222], [19.1790837, 72.8311184]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+            var marker_ba9aee408100597d3cf04d7a39f1ccee = L.marker(
+                [19.1790837, 72.8311184],
+                {}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+        var popup_ffc130591e85312d2306b8141b7e23e3 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_cd3a738f904cf3476709e99eeb7a6a1e = $(`<div id="html_cd3a738f904cf3476709e99eeb7a6a1e" style="width: 100.0%; height: 100.0%;">Recommendations: empty plot, latitude, hospital</div>`)[0];
+                popup_ffc130591e85312d2306b8141b7e23e3.setContent(html_cd3a738f904cf3476709e99eeb7a6a1e);
+            
+        
+
+        marker_ba9aee408100597d3cf04d7a39f1ccee.bindPopup(popup_ffc130591e85312d2306b8141b7e23e3)
+        ;
+
+        
+    
+    
+            var polygon_85d521ebda14c1beb63305eaa791c587 = L.polygon(
+                [[19.0624983, 72.8447199], [19.0624436, 72.8450164], [19.0623563, 72.8449934], [19.0622941, 72.8453007], [19.061829, 72.8452374], [19.0621053, 72.8444114], [19.0624983, 72.8447199]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+            var marker_7e30b146b2f618f0f757afd4160b1f5e = L.marker(
+                [19.0624983, 72.8447199],
+                {}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+        var popup_2c199df2edce65b8c93e7ef38f094062 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_78de49462b072c891b5e9b71399845be = $(`<div id="html_78de49462b072c891b5e9b71399845be" style="width: 100.0%; height: 100.0%;">Recommendations: empty plot, hospital, latitude</div>`)[0];
+                popup_2c199df2edce65b8c93e7ef38f094062.setContent(html_78de49462b072c891b5e9b71399845be);
+            
+        
+
+        marker_7e30b146b2f618f0f757afd4160b1f5e.bindPopup(popup_2c199df2edce65b8c93e7ef38f094062)
+        ;
+
+        
+    
+    
+            var polygon_78022e903e2bc06752742df42f9b36a1 = L.polygon(
+                [[19.1343936, 72.8436468], [19.1342669, 72.8429601], [19.1338412, 72.8430084], [19.1338911, 72.843746], [19.1341749, 72.8436923], [19.1343936, 72.8436468]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+            var marker_541c7afa423b13e53ed86b6b995b26de = L.marker(
+                [19.1343936, 72.8436468],
+                {}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+        var popup_847400ff833e346934794588de599ffb = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_9244ab7cd086dae0b0304306e99c6837 = $(`<div id="html_9244ab7cd086dae0b0304306e99c6837" style="width: 100.0%; height: 100.0%;">Recommendations: empty plot, hospital, latitude</div>`)[0];
+                popup_847400ff833e346934794588de599ffb.setContent(html_9244ab7cd086dae0b0304306e99c6837);
+            
+        
+
+        marker_541c7afa423b13e53ed86b6b995b26de.bindPopup(popup_847400ff833e346934794588de599ffb)
+        ;
+
+        
+    
+    
+            var polygon_f2798b4644c4bf408cb5210966d740b3 = L.polygon(
+                [[19.1355846, 72.8406856], [19.1357005, 72.8411947], [19.1359242, 72.8421769], [19.1357721, 72.8422198], [19.1356657, 72.8422842], [19.1355137, 72.8422949], [19.1353566, 72.8422788], [19.1352603, 72.842193], [19.1351488, 72.8421233], [19.1350872, 72.8419811], [19.1349055, 72.8414152], [19.1347831, 72.8411818], [19.1347274, 72.840994], [19.1352392, 72.8408599], [19.1355846, 72.8406856]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+            var marker_fc66ae52115892948d54970739b3caa6 = L.marker(
+                [19.1355846, 72.8406856],
+                {}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+        var popup_f57817858045ccb65ca31487696b0a71 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_6bf50367ff1e3f2f6565c79694159cd2 = $(`<div id="html_6bf50367ff1e3f2f6565c79694159cd2" style="width: 100.0%; height: 100.0%;">Recommendations: empty plot, hospital, latitude</div>`)[0];
+                popup_f57817858045ccb65ca31487696b0a71.setContent(html_6bf50367ff1e3f2f6565c79694159cd2);
+            
+        
+
+        marker_fc66ae52115892948d54970739b3caa6.bindPopup(popup_f57817858045ccb65ca31487696b0a71)
+        ;
+
+        
+    
+    
+            var polygon_9c38270f63ea45098534a7d5ee635afa = L.polygon(
+                [[19.1505193, 72.8307117], [19.1504827, 72.8310872], [19.1500266, 72.8310395], [19.1500548, 72.830664], [19.1505193, 72.8307117]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+            var marker_ed7b5df3135d2b810b743f1e4ab3ac89 = L.marker(
+                [19.1505193, 72.8307117],
+                {}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+        var popup_86640492b0ad753559fc4d4fccd6e41e = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_17869c4fa981c4b0d648d71a7d8d0d02 = $(`<div id="html_17869c4fa981c4b0d648d71a7d8d0d02" style="width: 100.0%; height: 100.0%;">Recommendations: empty plot, hospital, latitude</div>`)[0];
+                popup_86640492b0ad753559fc4d4fccd6e41e.setContent(html_17869c4fa981c4b0d648d71a7d8d0d02);
+            
+        
+
+        marker_ed7b5df3135d2b810b743f1e4ab3ac89.bindPopup(popup_86640492b0ad753559fc4d4fccd6e41e)
+        ;
+
+        
+    
+    
+            var polygon_4ead363632bc680870d6f90cce876a02 = L.polygon(
+                [[19.0582558, 72.8646518], [19.058721, 72.8646099], [19.0587958, 72.8646552], [19.0588421, 72.8647192], [19.0588849, 72.8653449], [19.0588457, 72.865458], [19.0587638, 72.8654995], [19.058323, 72.8655448], [19.0582558, 72.8646518]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+            var marker_28b6fc2c4b61d48d5e1a9bd988bea5e0 = L.marker(
+                [19.0582558, 72.8646518],
+                {}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+        var popup_7541f5a565e5ff56d787e22da6ee6ad5 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_783fab98839819297529da3676534243 = $(`<div id="html_783fab98839819297529da3676534243" style="width: 100.0%; height: 100.0%;">Recommendations: empty plot, latitude, hospital</div>`)[0];
+                popup_7541f5a565e5ff56d787e22da6ee6ad5.setContent(html_783fab98839819297529da3676534243);
+            
+        
+
+        marker_28b6fc2c4b61d48d5e1a9bd988bea5e0.bindPopup(popup_7541f5a565e5ff56d787e22da6ee6ad5)
+        ;
+
+        
+    
+    
+            var polygon_668cb61f3c7fb7009be8a0fd9632cf3f = L.polygon(
+                [[19.0587246, 72.8643574], [19.0587851, 72.8643159], [19.0586391, 72.8621712], [19.0585714, 72.8620355], [19.0584859, 72.8619865], [19.0583683, 72.8619978], [19.0583006, 72.8620581], [19.0578054, 72.862925], [19.0576985, 72.8631587], [19.0576094, 72.8633698], [19.0575311, 72.8636148], [19.0574776, 72.8639277], [19.0574491, 72.864184], [19.0574741, 72.8643725], [19.057556, 72.8644629], [19.0576558, 72.8644629], [19.0587246, 72.8643574]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+            var marker_88ee1e5f425d49f92ac1b68faba531c0 = L.marker(
+                [19.0587246, 72.8643574],
+                {}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+        var popup_0c4894268c4371d9c70a3ea4fb493b74 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_9957daeb94dbb54ad7b21049f8a061ae = $(`<div id="html_9957daeb94dbb54ad7b21049f8a061ae" style="width: 100.0%; height: 100.0%;">Recommendations: empty plot, latitude, hospital</div>`)[0];
+                popup_0c4894268c4371d9c70a3ea4fb493b74.setContent(html_9957daeb94dbb54ad7b21049f8a061ae);
+            
+        
+
+        marker_88ee1e5f425d49f92ac1b68faba531c0.bindPopup(popup_0c4894268c4371d9c70a3ea4fb493b74)
+        ;
+
+        
+    
+    
+            var polygon_3e7fc47e26151f544ef7f36aaf040845 = L.polygon(
+                [[19.0638771, 72.8689447], [19.0637951, 72.8681003], [19.0637239, 72.8679722], [19.0636312, 72.8679382], [19.0629337, 72.8679969], [19.06299, 72.8687034], [19.063364, 72.8686582], [19.0633961, 72.869005], [19.0638771, 72.8689447]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+            var marker_58010d67469bcc695baa52fc1fc316f5 = L.marker(
+                [19.0638771, 72.8689447],
+                {}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+        var popup_21ebb203319d28882d74f20c22272610 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_1fe8f099786eea003fbb923e34a72fd4 = $(`<div id="html_1fe8f099786eea003fbb923e34a72fd4" style="width: 100.0%; height: 100.0%;">Recommendations: empty plot, residential buildings, hospital</div>`)[0];
+                popup_21ebb203319d28882d74f20c22272610.setContent(html_1fe8f099786eea003fbb923e34a72fd4);
+            
+        
+
+        marker_58010d67469bcc695baa52fc1fc316f5.bindPopup(popup_21ebb203319d28882d74f20c22272610)
+        ;
+
+        
+    
+    
+            var polygon_be2f1f1727f44e9b5aed12d2aebc4350 = L.polygon(
+                [[19.0579307, 72.8655852], [19.0578481, 72.8655937], [19.0575738, 72.8657332], [19.0573422, 72.8652959], [19.057088, 72.864781], [19.0578587, 72.8646875], [19.0579307, 72.8655852]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+            var marker_edfa4d3317dd01f1ec282c90c484dd1e = L.marker(
+                [19.0579307, 72.8655852],
+                {}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+        var popup_6cfe82f6cb13dc68a9b38ba8d8511ffb = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_7762c4d77b2a365bbadf8b9abf35d737 = $(`<div id="html_7762c4d77b2a365bbadf8b9abf35d737" style="width: 100.0%; height: 100.0%;">Recommendations: empty plot, hospital, latitude</div>`)[0];
+                popup_6cfe82f6cb13dc68a9b38ba8d8511ffb.setContent(html_7762c4d77b2a365bbadf8b9abf35d737);
+            
+        
+
+        marker_edfa4d3317dd01f1ec282c90c484dd1e.bindPopup(popup_6cfe82f6cb13dc68a9b38ba8d8511ffb)
+        ;
+
+        
+    
+    
+            var polygon_8d89a35d7df5482a91cedb738448657f = L.polygon(
+                [[19.0588611, 72.8657401], [19.0581234, 72.865786], [19.058045, 72.86585], [19.0579773, 72.8659367], [19.0579773, 72.8660234], [19.0585117, 72.8670525], [19.0585651, 72.8671203], [19.0589609, 72.8667187], [19.0592196, 72.8664561], [19.0590199, 72.8661534], [19.0589364, 72.8658467], [19.0588611, 72.8657401]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+            var marker_c1f60500291daaaeb2cafe91fd410d4c = L.marker(
+                [19.0588611, 72.8657401],
+                {}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+        var popup_b7015e5aa03ca8365bd24c329fbc26cc = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_dba7d8da2ba2d4992fa26ceccd1db89c = $(`<div id="html_dba7d8da2ba2d4992fa26ceccd1db89c" style="width: 100.0%; height: 100.0%;">Recommendations: empty plot, latitude, hospital</div>`)[0];
+                popup_b7015e5aa03ca8365bd24c329fbc26cc.setContent(html_dba7d8da2ba2d4992fa26ceccd1db89c);
+            
+        
+
+        marker_c1f60500291daaaeb2cafe91fd410d4c.bindPopup(popup_b7015e5aa03ca8365bd24c329fbc26cc)
+        ;
+
+        
+    
+    
+            var polygon_68a8642cb7b385078938ac99c348fe33 = L.polygon(
+                [[19.0624796, 72.8650924], [19.0610154, 72.8645082], [19.0611064, 72.865582], [19.0621732, 72.8654806], [19.0624796, 72.8650924]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+            var marker_2fd27c11ae5bab66079ab35803c3eb7d = L.marker(
+                [19.0624796, 72.8650924],
+                {}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+        var popup_cddb277c1591221088ca5dd5eedf1182 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_43842acc9a98b2fba606827ebd905e76 = $(`<div id="html_43842acc9a98b2fba606827ebd905e76" style="width: 100.0%; height: 100.0%;">Recommendations: empty plot, hospital, latitude</div>`)[0];
+                popup_cddb277c1591221088ca5dd5eedf1182.setContent(html_43842acc9a98b2fba606827ebd905e76);
+            
+        
+
+        marker_2fd27c11ae5bab66079ab35803c3eb7d.bindPopup(popup_cddb277c1591221088ca5dd5eedf1182)
+        ;
+
+        
+    
+    
+            var polygon_17f34b2a3028d5a2d3fb36b3bd2eb42d = L.polygon(
+                [[19.1044441, 72.9173756], [19.1040132, 72.9180032], [19.1057577, 72.9191959], [19.1062266, 72.9182342], [19.1057902, 72.918024], [19.1053587, 72.9178162], [19.1049187, 72.9176042], [19.1044441, 72.9173756]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+            var marker_b927bcabde6875bb55154d2cf532fe87 = L.marker(
+                [19.1044441, 72.9173756],
+                {}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+        var popup_45ba0aaf74845b2143ff7c678105c984 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_7ca0edb6a0c1b6797893a5b9972156ae = $(`<div id="html_7ca0edb6a0c1b6797893a5b9972156ae" style="width: 100.0%; height: 100.0%;">Recommendations: empty plot, latitude, school</div>`)[0];
+                popup_45ba0aaf74845b2143ff7c678105c984.setContent(html_7ca0edb6a0c1b6797893a5b9972156ae);
+            
+        
+
+        marker_b927bcabde6875bb55154d2cf532fe87.bindPopup(popup_45ba0aaf74845b2143ff7c678105c984)
+        ;
+
+        
+    
+    
+            var polygon_6045345eed3f817eab49c9fdb959bb70 = L.polygon(
+                [[19.1587575, 72.8379578], [19.1587483, 72.8383092], [19.1583974, 72.8382989], [19.1584066, 72.8379475], [19.1587575, 72.8379578]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+            var marker_d74352eaf5061182f1470464d117c151 = L.marker(
+                [19.1587575, 72.8379578],
+                {}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+        var popup_8b2a2ed1a33b66e1d5b988c46ad3141d = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_ef77459f1751317f6817487034e60372 = $(`<div id="html_ef77459f1751317f6817487034e60372" style="width: 100.0%; height: 100.0%;">Recommendations: empty plot, hospital, latitude</div>`)[0];
+                popup_8b2a2ed1a33b66e1d5b988c46ad3141d.setContent(html_ef77459f1751317f6817487034e60372);
+            
+        
+
+        marker_d74352eaf5061182f1470464d117c151.bindPopup(popup_8b2a2ed1a33b66e1d5b988c46ad3141d)
+        ;
+
+        
+    
+    
+            var polygon_11d57a52e6521eca57b44e75cddb5c92 = L.polygon(
+                [[19.0597562, 72.8618422], [19.0588991, 72.861913], [19.0589419, 72.862452], [19.0590096, 72.8625349], [19.0591272, 72.86255], [19.0598026, 72.8624916], [19.0597562, 72.8618422]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+            var marker_0b3ff90b224daf0b9d77f294e46a1e86 = L.marker(
+                [19.0597562, 72.8618422],
+                {}
+            ).addTo(map_6ea1a031ce32c06f67d7ffe8367ef8be);
+        
+    
+        var popup_f079b5e1af91b30e7b688decca763123 = L.popup({"maxWidth": "100%"});
+
+        
+            
+                var html_b06e97491408185c9103e4c5123e23af = $(`<div id="html_b06e97491408185c9103e4c5123e23af" style="width: 100.0%; height: 100.0%;">Recommendations: empty plot, latitude, hospital</div>`)[0];
+                popup_f079b5e1af91b30e7b688decca763123.setContent(html_b06e97491408185c9103e4c5123e23af);
+            
+        
+
+        marker_0b3ff90b224daf0b9d77f294e46a1e86.bindPopup(popup_f079b5e1af91b30e7b688decca763123)
+        ;
+
+        
+    
+</script>
+</html>
