@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Form
+from fastapi import FastAPI, Form, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 import requests
@@ -13,6 +13,8 @@ import json
 from fastapi.responses import JSONResponse
 from pymongo import MongoClient
 from bson import json_util
+from typing import List
+import geopy.distance
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
@@ -65,8 +67,7 @@ MONGO_URI = os.getenv("MONGO_URI")
 client = MongoClient(MONGO_URI)
 db = client.get_database("plot_recommendations")
 poll_collection = db.poll_data
-
-
+plot_submission_collection = db.plot_submissions
 
 def get_population_and_places(lat, lon):
     try:
@@ -117,9 +118,9 @@ def get_nearby_places(lat, lon):
     query = f"""
     [out:json];
     (
-      node["amenity"](around:10000,{lat},{lon});
-      node["leisure"](around:10000,{lat},{lon});
-      node["shop"](around:10000,{lat},{lon});
+      node["amenity"](around:6000,{lat},{lon});
+      node["leisure"](around:6000,{lat},{lon});
+      node["shop"](around:6000,{lat},{lon});
     );
     out body;
     """
@@ -156,6 +157,7 @@ def summarize_nearby_places(nearby_places):
         else:
             summary[place] = 1
     return summary
+
 def get_recommendations(lat, lon, population, climate, nearby_places_summary, poll_data):
     places_description = ", ".join([f"{place}: {count}" for place, count in nearby_places_summary.items()])
     logger.info(places_description)
@@ -196,7 +198,7 @@ def get_recommendations(lat, lon, population, climate, nearby_places_summary, po
             )
         ).get_result()
 
-        logger.info(f"Watson NLU Response: {nlu_response}")
+        logger.info(f"Watson NLU Response: {lat},{lon}")
 
         # Extract relevant information from NLU response
         keywords = [keyword['text'] for keyword in nlu_response.get('keywords', [])]
@@ -259,8 +261,6 @@ def get_empty_plots(city_name):
       way["landuse"="brownfield"](area.searchArea);
       way["abandoned"="yes"](area.searchArea);
       way["disused"="yes"](area.searchArea);
-
-      // Include areas under construction but filter out if not vacant
       way["landuse"="construction"]["vacant"="yes"](area.searchArea);
     );
     out body;
@@ -306,38 +306,113 @@ def get_empty_plots(city_name):
             if element['type'] == 'way':
                 plot_coords = [node_coords[node_id] for node_id in element['nodes'] if node_id in node_coords]
                 if plot_coords:
-                    empty_plots.append(plot_coords)
+                    # Calculate plot size (even if incomplete)
+                    plot_size = calculate_plot_size(plot_coords)
+                    
+                    # Find boundary coordinates (even if incomplete)
+                    lats = [coord[0] for coord in plot_coords]
+                    lons = [coord[1] for coord in plot_coords]
+                    boundaries = {
+                        "north": max(lats, default=0),
+                        "south": min(lats, default=0),
+                        "east": max(lons, default=0),
+                        "west": min(lons, default=0)
+                    }
+                    
+                    # Include the plot even if calculations are incomplete
+                    empty_plots.append({
+                        "coordinates": plot_coords,
+                        "size": plot_size if plot_size > 0 else None,
+                        "boundaries": boundaries
+                    })
 
         return empty_plots
     except Exception as e:
         logger.error(f"Error in get_empty_plots: {str(e)}")
         return []
 
+def calculate_plot_size(coordinates):
+    if len(coordinates) < 3:
+        return 0  # Not enough points to form a polygon, but we'll return 0 instead of failing
+    
+    total_area = 0
+    for i in range(len(coordinates)):
+        j = (i + 1) % len(coordinates)
+        total_area += coordinates[i][0] * coordinates[j][1]
+        total_area -= coordinates[j][0] * coordinates[i][1]
+    area = abs(total_area) / 2
+    
+    # Convert area to square meters (approximate)
+    center_lat = sum(coord[0] for coord in coordinates) / len(coordinates)
+    center_lon = sum(coord[1] for coord in coordinates) / len(coordinates)
+    coord_1 = (center_lat, center_lon)
+    coord_2 = (center_lat + 0.001, center_lon + 0.001)  # Move slightly to calculate distance
+    meters_per_degree = geopy.distance.distance(coord_1, coord_2).meters / 0.001
+    return area * (meters_per_degree ** 2)
+
 @app.post("/api/get-empty-plots")
 async def get_empty_plots_route(city: str = Form(...)):
     try:
-        empty_plots = get_empty_plots(city)
+        # Get empty plots from Overpass API
+        overpass_plots = get_empty_plots(city)
 
-        if not empty_plots:
+        # Get submitted plots from MongoDB
+        submitted_plots = list(plot_submission_collection.find({"city": city}))
+
+        # Combine and process all plots
+        all_plots = []
+
+        for plot in overpass_plots:
+            all_plots.append({
+                "source": "overpass",
+                "coordinates": plot["coordinates"],
+                "lat": plot["coordinates"][0][0],
+                "lon": plot["coordinates"][0][1],
+                "size": plot["size"],
+                "boundaries": plot["boundaries"]
+            })
+
+        for plot in submitted_plots:
+            plot_data = {
+                "source": "user_submitted",
+                "coordinates": [[plot["latitude"], plot["longitude"]]],
+                "lat": plot["latitude"],
+                "lon": plot["longitude"],
+                "size": None,  # Size might not be available for user-submitted plots
+                "owner_name": plot["owner_name"],
+                "owner_email": plot["owner_email"],
+                "owner_mobile": plot["owner_mobile"],
+                "files": plot["files"]
+            }
+            
+            # Include boundaries if available
+            if "boundaries" in plot:
+                plot_data["boundaries"] = plot["boundaries"]
+            else:
+                # If no boundaries are provided, create a small square around the point
+                delta = 0.001  # Approximately 100 meters
+                plot_data["boundaries"] = {
+                    "north": plot["latitude"] + delta,
+                    "south": plot["latitude"] - delta,
+                    "east": plot["longitude"] + delta,
+                    "west": plot["longitude"] - delta
+                }
+            
+            all_plots.append(plot_data)
+
+        if not all_plots:
             return JSONResponse(content={"message": "No empty plots found"})
 
-        plot_data = []
-        for plot in empty_plots:
-            if plot:
-                lat, lon = plot[0]
-                plot_data.append({
-                    "coordinates": plot,
-                    "lat": lat,
-                    "lon": lon
-                })
-
         return JSONResponse(content={
-            "message": f"Found {len(empty_plots)} empty plots in {city}",
-            "plots": plot_data
+            "message": f"Found {len(all_plots)} empty plots in {city}",
+            "plots": json.loads(json_util.dumps(all_plots))
         })
+    
     except Exception as e:
         logger.error(f"Error in get_empty_plots_route: {str(e)}")
         return JSONResponse(content={"error": f"An error occurred: {str(e)}"}, status_code=500)
+
+
 @app.post("/api/vote")
 async def vote(lat: float = Form(...), lon: float = Form(...), category: str = Form(...)):
     try:
@@ -352,7 +427,7 @@ async def vote(lat: float = Form(...), lon: float = Form(...), category: str = F
     except Exception as e:
         logger.error(f"Error in vote route: {str(e)}")
         return JSONResponse(content={"error": f"An error occurred: {str(e)}"}, status_code=500)
-
+    
 @app.get("/api/poll-data")
 async def get_poll_data(lat: float, lon: float):
     try:
@@ -395,7 +470,77 @@ async def get_recommendations_route(lat: float = Form(...), lon: float = Form(..
     except Exception as e:
         logger.error(f"Error in get_recommendations_route: {str(e)}")
         return JSONResponse(content={"error": f"An error occurred: {str(e)}"}, status_code=500)
+    
+def ensure_uploads_directory():
+    uploads_dir = "uploads"
+    if not os.path.exists(uploads_dir):
+        os.makedirs(uploads_dir)
+        logger.info(f"Created uploads directory: {uploads_dir}")
 
+@app.get("/api/get-submitted-plots")
+async def get_submitted_plots():
+    try:
+        submitted_plots = list(plot_submission_collection.find())
+        return JSONResponse(content={
+            "message": f"Found {len(submitted_plots)} submitted plots",
+            "plots": json.loads(json_util.dumps(submitted_plots))
+        })
+    except Exception as e:
+        logger.error(f"Error in get_submitted_plots route: {str(e)}")
+        return JSONResponse(content={"error": f"An error occurred: {str(e)}"}, status_code=500)
+
+
+from fastapi import Form
+from fastapi.responses import JSONResponse
+from typing import Optional, Dict
+import json
+
+@app.post("/api/submit-plot")
+async def submit_plot(
+    latitude: float = Form(...),
+    longitude: float = Form(...),
+    city: str = Form(...),
+    owner_name: str = Form(...),
+    owner_email: str = Form(...),
+    owner_mobile: str = Form(...),
+    files: List[UploadFile] = File(...),
+    boundaries: Optional[str] = Form(None)
+):
+    try:
+        ensure_uploads_directory()
+
+        plot_submission = {
+            "latitude": latitude,
+            "longitude": longitude,
+            "city": city,
+            "owner_name": owner_name,
+            "owner_email": owner_email,
+            "owner_mobile": owner_mobile,
+            "files": []
+        }
+
+        # Process boundaries if provided
+        if boundaries:
+            try:
+                boundaries_dict = json.loads(boundaries)
+                plot_submission["boundaries"] = boundaries_dict
+            except json.JSONDecodeError:
+                logger.error(f"Invalid JSON for boundaries: {boundaries}")
+                return JSONResponse(content={"error": "Invalid boundaries format"}, status_code=400)
+
+        for file in files:
+            file_path = os.path.join("uploads", file.filename)
+            with open(file_path, "wb") as buffer:
+                buffer.write(await file.read())
+            plot_submission["files"].append(file_path)
+
+        result = plot_submission_collection.insert_one(plot_submission)
+
+        return JSONResponse(content={"message": "Plot submitted successfully", "id": str(result.inserted_id)})
+    except Exception as e:
+        logger.error(f"Error in submit_plot route: {str(e)}")
+        return JSONResponse(content={"error": f"An error occurred: {str(e)}"}, status_code=500)
+    
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)

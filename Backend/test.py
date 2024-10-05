@@ -1,10 +1,15 @@
 import requests
 
-def test_geonames_api(lat, lon):
-    username = 'abizer786'  # Replace with your username
-    url = f"http://api.geonames.org/findNearbyPlaceNameJSON?lat={lat}&lng={lon}&username={username}"
-    response = requests.get(url)
-    return response.json()
+client_id = '496c242a-8df3-43b3-a4aa-4db85e00e8f2'
+client_secret = 'lrBHf77WZrhZfv3nsv27lcJyTKVtqOjz'
 
-# Example coordinates (you can replace these with valid lat/lon)
-print(test_geonames_api(40.7128, -74.0060))  # For New York City
+response = requests.post('https://services.sentinel-hub.com/oauth/token',
+    data={
+        'grant_type': 'client_credentials',
+        'client_id': client_id,
+        'client_secret': client_secret,
+    }
+)
+
+token = response.json()['access_token']
+print(f"Your API key (OAuth token): {token}")

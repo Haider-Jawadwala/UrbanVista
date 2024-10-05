@@ -7,6 +7,8 @@ import 'tailwindcss/tailwind.css';
 import historicalLocations from '../data/historical-locations.json';
 import { BarChart, Bar, XAxis,Tooltip,ResponsiveContainer } from 'recharts';
 import environmentalFacts from '../data/environmentalFacts';
+import TimeLapseVisualization from '../components/TimeLapse/TimeLapseVisualization';
+
 
 const Earth = dynamic(() => import('../components/EarthDash/earthdash'), { ssr: false });
 
@@ -28,6 +30,9 @@ export default function Dashboard() {
   const [showGraph, setShowGraph] = useState(false);
   const [showRecommendationPoll, setShowRecommendationPoll] = useState(false);
   const [currentFact, setCurrentFact] = useState('');
+  const [selectedPlot, setSelectedPlot] = useState(null);
+  const [showTimeLapse, setShowTimeLapse] = useState(false);
+
   const [pollCategories, setPollCategories] = useState([
     "Residential Development",
     "Commercial Space",
@@ -119,6 +124,8 @@ export default function Dashboard() {
     setIsHistoricalMappingActive(false);
     setShowGraph(true);
     setShowRecommendationPoll(true);
+    setShowTimeLapse(false);
+
     try {
       const formData = new FormData();
       formData.append('city', city);
@@ -183,6 +190,8 @@ export default function Dashboard() {
 
   const handleMarkerClick = (index) => {
     const plot = plotData[index];
+    setSelectedPlot(plot);
+    setShowTimeLapse(true);
     fetchRecommendations(plot.lat, plot.lon);
   };
 
@@ -413,6 +422,12 @@ export default function Dashboard() {
         <HistoricalDataDisplay currentLocation={currentLocation} />
       )}
     </div>
+
+    {/* Time-Lapse Visualization */}
+    <TimeLapseVisualization 
+        plotData={selectedPlot}
+        isVisible={showTimeLapse}    
+      />
 
         {/* Loading screen */}
         <AnimatePresence>
