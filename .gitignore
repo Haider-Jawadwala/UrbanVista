@@ -5,6 +5,7 @@
 /.pnp
 .pnp.js
 /backend/venv
+/backend/.env
 
 # testing
 /coverage

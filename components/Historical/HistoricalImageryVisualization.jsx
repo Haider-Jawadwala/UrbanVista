@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 const HistoricalImageryVisualization = ({ plotData, isVisible }) => {
@@ -78,7 +77,7 @@ const HistoricalImageryVisualization = ({ plotData, isVisible }) => {
           ...localData.find(d => d.date === parseInt(year)) || {}
         })).sort((a, b) => a.year - b.year);
 
-        setCombinedData(combinedData);
+        setCombinedData(combinedData);  // Corrected this line
       } catch (err) {
         console.error("Error fetching data:", err);
         setError(err.message);
@@ -106,21 +105,13 @@ const HistoricalImageryVisualization = ({ plotData, isVisible }) => {
   if (!isVisible) return null;
 
   return (
-    <motion.div
-      className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 bg-black p-4 rounded-lg shadow-lg w-96"
-      drag
-      dragMomentum={false}
-      initial={{ opacity: 0, scale: 0.8 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.5 }}
-    >
-      <h3 className="text-white text-lg font-semibold mb-2">Environmental Data Visualization</h3>
+    <div className="bg-black p-4 rounded-lg shadow-lg w-full h-full">
       
       {loading && <p className="text-white">Loading data...</p>}
       {error && <p className="text-red-500">Error: {error}. Displaying mock data.</p>}
       
       {!loading && (
-        <div className="relative w-full h-[300px]">
+        <div className="relative w-full h-[calc(100%-2rem)]">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={combinedData}>
               <CartesianGrid strokeDasharray="3 3" />
@@ -137,7 +128,7 @@ const HistoricalImageryVisualization = ({ plotData, isVisible }) => {
           </ResponsiveContainer>
         </div>
       )}
-    </motion.div>
+    </div>
   );
 };
 
