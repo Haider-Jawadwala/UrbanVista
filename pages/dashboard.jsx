@@ -8,12 +8,50 @@ import historicalLocations from '../data/historical-locations.json';
 import { BarChart, Bar, XAxis,Tooltip,ResponsiveContainer } from 'recharts';
 import environmentalFacts from '../data/environmentalFacts';
 import TimeLapseVisualization from '../components/TimeLapse/TimeLapseVisualization';
+import HistoricalImageryVisualization from '../components/Historical/HistoricalImageryVisualization';
+import HistoricalImageryTimelapse from '../components/HistoricalTimeLapse/HistoricalImageryTimelapse';
 
 
 const Earth = dynamic(() => import('../components/EarthDash/earthdash'), { ssr: false });
 
 const MAPBOX_ACCESS_TOKEN = 'pk.eyJ1IjoiYWJpemVyNzg2IiwiYSI6ImNtMXBib3QzNDAyaXMyanM2NHozZ2UzMG4ifQ.ORflOjRbApQD8WOMkE3j-Q';
 
+const CustomTooltip = ({ content, children }) => {
+  const [isVisible, setIsVisible] = useState(false);
+
+  return (
+    <div 
+      className="relative inline-block"
+      onMouseEnter={() => setIsVisible(true)}
+      onMouseLeave={() => setIsVisible(false)}
+    >
+      {children}
+      <AnimatePresence>
+        {isVisible && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 10 }}
+            className="absolute z-20 px-3 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm whitespace-nowrap"
+            style={{
+              top: 'calc(100% + 10px)',
+              right: '50%',
+            }}
+          >
+            {content}
+            <div 
+              className="absolute w-2 h-2 bg-gray-900 rotate-45"
+              style={{
+                top: '-4px',
+                right: '10px',
+              }}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
 export default function Dashboard() {
   const [city, setCity] = useState('');
   const [suggestions, setSuggestions] = useState([]);
@@ -32,7 +70,18 @@ export default function Dashboard() {
   const [currentFact, setCurrentFact] = useState('');
   const [selectedPlot, setSelectedPlot] = useState(null);
   const [showTimeLapse, setShowTimeLapse] = useState(false);
-
+   const VRIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M21 8c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V8z" />
+      <path d="M9 12c0 .55-.45 1-1 1s-1-.45-1-1 .45-1 1-1 1 .45 1 1z" />
+      <path d="M17 12c0 .55-.45 1-1 1s-1-.45-1-1 .45-1 1-1 1 .45 1 1z" />
+      <path d="M3 10v4" />
+      <path d="M21 10v4" />
+      <path d="M12 7v1" />
+      <path d="M12 16v1" />
+      <path d="M7 9c-1.1 0-2 .9-2 2v2c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2v-2c0-1.1-.9-2-2-2H7z" />
+    </svg>
+  );
   const [pollCategories, setPollCategories] = useState([
     "Residential Development",
     "Commercial Space",
@@ -381,7 +430,18 @@ export default function Dashboard() {
 
         {/* Recommendations (top-right corner) */}
         <div className="absolute top-14 right-4 z-10 w-96 max-h-64 overflow-y-auto bg-black p-4 rounded-lg shadow-md">
-          <h3 className="text-xl font-semibold mb-2 text-white">Recommendations:</h3>
+          <div className="flex justify-between items-center mb-2">
+            <h3 className="text-xl font-semibold text-white">Recommendations:</h3>
+            <CustomTooltip content="VR Visualization">
+            <button
+              className="bg-gray-700 hover:bg-gray-600 text-white p-2 rounded-full"
+              onClick={() => console.log('VR mode activated')}
+              aria-label="Activate VR mode"
+            >
+              <VRIcon />
+            </button>
+          </CustomTooltip>
+          </div>
           {recommendations.length > 0 ? (
             <ul className="list-disc pl-5 text-white">
               {recommendations.map((recommendation, index) => (
@@ -425,6 +485,10 @@ export default function Dashboard() {
 
     {/* Time-Lapse Visualization */}
     <TimeLapseVisualization 
+        plotData={selectedPlot}
+        isVisible={showTimeLapse}    
+      />
+          <HistoricalImageryTimelapse
         plotData={selectedPlot}
         isVisible={showTimeLapse}    
       />

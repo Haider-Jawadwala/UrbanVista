@@ -111,11 +111,18 @@ const Hero = ({ message }: Props) => {
         <h3 className="text-2xl sm:text-4xl font-semibold mb-8 animate-fade-in-up">
           <TypingEffect />
         </h3>
-        <Link href="dashboard" passHref>
-          <button className="px-6 py-3 sm:px-8 sm:py-3 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-all duration-300 transform hover:scale-105 hover:shadow-lg animate-pulse-subtle">
-            Try it Out!!!
-          </button>
-        </Link>
+        <div className="flex space-x-4">
+          <Link href="/PlotSubmission" passHref>
+            <button className="px-6 py-3 sm:px-8 sm:py-3 bg-green-600 text-white rounded-full hover:bg-green-700 transition-all duration-300 transform hover:scale-105 hover:shadow-lg animate-pulse-subtle w-52">
+              Register plot
+            </button>
+          </Link>
+          <Link href="dashboard" passHref>
+            <button className="px-6 py-3 sm:px-8 sm:py-3 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-all duration-300 transform hover:scale-105 hover:shadow-lg animate-pulse-subtle w-52">
+              Try it Out!!!
+            </button>
+          </Link>
+        </div>
       </div>
 
       {/* Loading indicator */}

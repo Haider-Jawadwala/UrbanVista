@@ -98,7 +98,7 @@ const TimeLapseVisualization = ({ plotData, isVisible }) => {
 
   return (
     <motion.div
-      className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 bg-black p-4 rounded-lg shadow-lg w-[400px] "
+      className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 bg-black p-4 rounded-lg shadow-lg w-96 "
       drag
       dragMomentum={false}
       onDragStart={handleDragStart}
@@ -108,7 +108,7 @@ const TimeLapseVisualization = ({ plotData, isVisible }) => {
       transition={{ duration: 0.5 }}
     >
       <h3 className="text-white text-lg font-semibold mb-2">Area Visualization</h3>
-      <div className="relative w-[360px] h-[250px]">
+      <div className="relative w-[340px] h-[250px]">
         {isLoading ? (
           <div className="flex items-center justify-center w-full h-full">
             <p className="text-white">Loading images...</p>
