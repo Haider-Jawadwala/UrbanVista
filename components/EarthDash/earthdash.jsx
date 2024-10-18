@@ -40,7 +40,17 @@ const Earth = ({ plotData, onMarkerClick, historicalLocation }) => {
 
       if (plotData.length > 0) {
         const newMarkers = plotData.map((plot, index) => {
-          const marker = new mapboxgl.Marker()
+          let markerColor = '#0000FF'; // Default color (blue for available)
+
+          if (plot.status === 'infrastructure') {
+            markerColor = '#0000FF'; // Blue for infrastructure
+          } else if (plot.status === 'environmental') {
+            markerColor = '#00FF00'; // Green for environmental
+          } else if (plot.status === 'available') {
+            markerColor = '#FF0000'; // Red for available
+          }
+
+          const marker = new mapboxgl.Marker({ color: markerColor })
             .setLngLat([plot.lon, plot.lat])
             .addTo(map);
 

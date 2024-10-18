@@ -15,6 +15,11 @@ from pymongo import MongoClient
 from bson import json_util
 from typing import List
 import geopy.distance
+from fastapi import Form
+from fastapi.responses import JSONResponse
+from typing import Optional, Dict
+import json
+
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
@@ -68,6 +73,8 @@ client = MongoClient(MONGO_URI)
 db = client.get_database("plot_recommendations")
 poll_collection = db.poll_data
 plot_submission_collection = db.plot_submissions
+plot_status_collection = db.plot_status
+
 
 def get_population_and_places(lat, lon):
     try:
@@ -384,7 +391,7 @@ async def get_empty_plots_route(city: str = Form(...)):
                 "owner_mobile": plot["owner_mobile"],
                 "files": plot["files"]
             }
-            
+
             # Include boundaries if available
             if "boundaries" in plot:
                 plot_data["boundaries"] = plot["boundaries"]
@@ -397,20 +404,30 @@ async def get_empty_plots_route(city: str = Form(...)):
                     "east": plot["longitude"] + delta,
                     "west": plot["longitude"] - delta
                 }
-            
+
             all_plots.append(plot_data)
 
         if not all_plots:
             return JSONResponse(content={"message": "No empty plots found"})
 
+        for plot in all_plots:
+            plot_status = plot_status_collection.find_one({"latitude": plot["lat"], "longitude": plot["lon"]})
+            if plot_status:
+                plot["status"] = plot_status["status"]
+                plot["color"] = "green" if plot_status["status"] == "environmental" else "blue"
+            else:
+                plot["status"] = "available"
+                plot["color"] = "red"
+
         return JSONResponse(content={
             "message": f"Found {len(all_plots)} empty plots in {city}",
             "plots": json.loads(json_util.dumps(all_plots))
         })
-    
+
     except Exception as e:
         logger.error(f"Error in get_empty_plots_route: {str(e)}")
         return JSONResponse(content={"error": f"An error occurred: {str(e)}"}, status_code=500)
+
 
 
 @app.post("/api/vote")
@@ -490,10 +507,6 @@ async def get_submitted_plots():
         return JSONResponse(content={"error": f"An error occurred: {str(e)}"}, status_code=500)
 
 
-from fastapi import Form
-from fastapi.responses import JSONResponse
-from typing import Optional, Dict
-import json
 
 @app.post("/api/submit-plot")
 async def submit_plot(
@@ -540,6 +553,43 @@ async def submit_plot(
     except Exception as e:
         logger.error(f"Error in submit_plot route: {str(e)}")
         return JSONResponse(content={"error": f"An error occurred: {str(e)}"}, status_code=500)
+
+@app.post("/api/update-plot-status")
+async def update_plot_status(
+    latitude: float = Form(...),
+    longitude: float = Form(...),
+    status: str = Form(...)
+):
+    try:
+        plot_data = {
+            "latitude": latitude,
+            "longitude": longitude,
+            "status": status
+        }
+
+        result = plot_status_collection.update_one(
+            {"latitude": latitude, "longitude": longitude},
+            {"$set": plot_data},
+            upsert=True
+        )
+
+        return JSONResponse(content={"message": "Plot status updated successfully"})
+    except Exception as e:
+        logger.error(f"Error in update_plot_status route: {str(e)}")
+        return JSONResponse(content={"error": f"An error occurred: {str(e)}"}, status_code=500)
+
+@app.get("/api/get-plot-status")
+async def get_plot_status(latitude: float, longitude: float):
+    try:
+        plot_status = plot_status_collection.find_one({"latitude": latitude, "longitude": longitude})
+        if plot_status:
+            return JSONResponse(content=json.loads(json_util.dumps(plot_status)))
+        else:
+            return JSONResponse(content={"message": "Plot status not found"}, status_code=404)
+    except Exception as e:
+        logger.error(f"Error in get_plot_status route: {str(e)}")
+        return JSONResponse(content={"error": f"An error occurred: {str(e)}"}, status_code=500)
+
     
 if __name__ == "__main__":
     import uvicorn

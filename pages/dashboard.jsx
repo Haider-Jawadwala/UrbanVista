@@ -2,15 +2,13 @@ import React, { useState, useEffect, useRef } from 'react';
 import Head from 'next/head';
 import dynamic from 'next/dynamic';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useSpring, animated } from 'react-spring';
 import 'tailwindcss/tailwind.css';
 import historicalLocations from '../data/historical-locations.json';
-import { BarChart, Bar, XAxis,Tooltip,ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, XAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import environmentalFacts from '../data/environmentalFacts';
 import TimeLapseVisualization from '../components/TimeLapse/TimeLapseVisualization';
 import HistoricalImageryVisualization from '../components/Historical/HistoricalImageryVisualization';
-import HistoricalImageryTimelapse from '../components/HistoricalTimeLapse/HistoricalImageryTimelapse';
-
+import PlotStatusComponent from '../components/PlotStatus/PlotStatusComponent';
 
 const Earth = dynamic(() => import('../components/EarthDash/earthdash'), { ssr: false });
 
@@ -20,7 +18,7 @@ const CustomTooltip = ({ content, children }) => {
   const [isVisible, setIsVisible] = useState(false);
 
   return (
-    <div 
+    <div
       className="relative inline-block"
       onMouseEnter={() => setIsVisible(true)}
       onMouseLeave={() => setIsVisible(false)}
@@ -39,7 +37,7 @@ const CustomTooltip = ({ content, children }) => {
             }}
           >
             {content}
-            <div 
+            <div
               className="absolute w-2 h-2 bg-gray-900 rotate-45"
               style={{
                 top: '-4px',
@@ -52,6 +50,7 @@ const CustomTooltip = ({ content, children }) => {
     </div>
   );
 };
+
 export default function Dashboard() {
   const [city, setCity] = useState('');
   const [suggestions, setSuggestions] = useState([]);
@@ -70,7 +69,7 @@ export default function Dashboard() {
   const [currentFact, setCurrentFact] = useState('');
   const [selectedPlot, setSelectedPlot] = useState(null);
   const [showTimeLapse, setShowTimeLapse] = useState(false);
-   const VRIcon = () => (
+  const VRIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <path d="M21 8c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V8z" />
       <path d="M9 12c0 .55-.45 1-1 1s-1-.45-1-1 .45-1 1-1 1 .45 1 1z" />
@@ -237,6 +236,13 @@ export default function Dashboard() {
     }
   };
 
+  const handleStatusUpdate = (status) => {
+    setSelectedPlot(prevPlot => ({
+      ...prevPlot,
+      status: status
+    }));
+  };
+
   const handleMarkerClick = (index) => {
     const plot = plotData[index];
     setSelectedPlot(plot);
@@ -310,44 +316,44 @@ export default function Dashboard() {
   };
 
   const PollGraph = ({ pollData }) => {
-  const [chartData, setChartData] = useState([]);
+    const [chartData, setChartData] = useState([]);
 
-  useEffect(() => {
-    const maxVotes = Math.max(...pollData.map(item => item.votes));
-    const normalizedData = pollData.map(item => ({
-      category: item.category,
-      votes: (item.votes / maxVotes) * 100, // Normalize to percentage
-    }));
-    setChartData(normalizedData);
-  }, [pollData]);
+    useEffect(() => {
+      const maxVotes = Math.max(...pollData.map(item => item.votes));
+      const normalizedData = pollData.map(item => ({
+        category: item.category,
+        votes: (item.votes / maxVotes) * 100, // Normalize to percentage
+      }));
+      setChartData(normalizedData);
+    }, [pollData]);
 
-  const chartAnimation = useSpring({
-    from: { opacity: 0, transform: 'scale(0.8)' },
-    to: { opacity: 1, transform: 'scale(1)' },
-    config: { duration: 1000 },
-  });
+    const chartAnimation = useSpring({
+      from: { opacity: 0, transform: 'scale(0.8)' },
+      to: { opacity: 1, transform: 'scale(1)' },
+      config: { duration: 1000 },
+    });
 
-  return (
-    <motion.div
-      className="mt-8 bg-gradient-to-br from-gray-900 to-black rounded-lg shadow-lg p-6"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-    >
-      <h3 className="text-xl font-semibold mb-4 text-center text-blue-400">Community Preferences</h3>
-      <animated.div style={chartAnimation} className="w-full h-64">
-        <ResponsiveContainer width="100%" height="100%">
-          <RadarChart cx="50%" cy="50%" outerRadius="80%" data={chartData}>
-            <PolarGrid stroke="#4a5568" />
-            <PolarAngleAxis dataKey="category" tick={{ fill: '#e2e8f0', fontSize: 10 }} />
-            <PolarRadiusAxis angle={30} domain={[0, 100]} tick={{ fill: '#e2e8f0' }} />
-            <Radar name="Votes" dataKey="votes" stroke="#4fd1c5" fill="#4fd1c5" fillOpacity={0.6} />
-          </RadarChart>
-        </ResponsiveContainer>
-      </animated.div>
-    </motion.div>
-  );
-};
+    return (
+      <motion.div
+        className="mt-8 bg-gradient-to-br from-gray-900 to-black rounded-lg shadow-lg p-6"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        <h3 className="text-xl font-semibold mb-4 text-center text-blue-400">Community Preferences</h3>
+        <animated.div style={chartAnimation} className="w-full h-64">
+          <ResponsiveContainer width="100%" height="100%">
+            <RadarChart cx="50%" cy="50%" outerRadius="80%" data={chartData}>
+              <PolarGrid stroke="#4a5568" />
+              <PolarAngleAxis dataKey="category" tick={{ fill: '#e2e8f0', fontSize: 10 }} />
+              <PolarRadiusAxis angle={30} domain={[0, 100]} tick={{ fill: '#e2e8f0' }} />
+              <Radar name="Votes" dataKey="votes" stroke="#4fd1c5" fill="#4fd1c5" fillOpacity={0.6} />
+            </RadarChart>
+          </ResponsiveContainer>
+        </animated.div>
+      </motion.div>
+    );
+  };
 
   // Animation variants for smooth transitions
   const containerVariants = {
@@ -406,7 +412,12 @@ export default function Dashboard() {
       <main className="h-screen relative">
         {/* Earth component (centered and full-screen) */}
         <div className="absolute inset-0 z-0">
-          <Earth plotData={plotData} onMarkerClick={handleMarkerClick} historicalLocation={isHistoricalMappingActive ? currentLocation : null} />
+          <Earth
+            plotData={plotData}
+            onMarkerClick={handleMarkerClick}
+            historicalLocation={isHistoricalMappingActive ? currentLocation : null}
+            highlightedPlot={highlightedPlot}
+          />
         </div>
 
         {/* Search bar and button (top-left corner) */}
@@ -433,14 +444,14 @@ export default function Dashboard() {
           <div className="flex justify-between items-center mb-2">
             <h3 className="text-xl font-semibold text-white">Recommendations:</h3>
             <CustomTooltip content="VR Visualization">
-            <button
-              className="bg-gray-700 hover:bg-gray-600 text-white p-2 rounded-full"
-              onClick={() => console.log('VR mode activated')}
-              aria-label="Activate VR mode"
-            >
-              <VRIcon />
-            </button>
-          </CustomTooltip>
+              <button
+                className="bg-gray-700 hover:bg-gray-600 text-white p-2 rounded-full"
+                onClick={() => console.log('VR mode activated')}
+                aria-label="Activate VR mode"
+              >
+                <VRIcon />
+              </button>
+            </CustomTooltip>
           </div>
           {recommendations.length > 0 ? (
             <ul className="list-disc pl-5 text-white">
@@ -460,38 +471,46 @@ export default function Dashboard() {
 
         {/* Graph or Historical Data (bottom-left corner) */}
         <div className="absolute bottom-4 left-4 z-10 w-96 h-64 bg-black p-4 rounded-lg shadow-md">
-      {showGraph ? (
-        <>
-          <h3 className="text-xl font-semibold mb-2 text-white">Community Votes</h3>
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={pollData} margin={{ top: 10, right: 10, left: 0, bottom: 40 }}>
-              <XAxis
-                dataKey="category"
-                tick={{ fill: '#ffffff', fontSize: 8 }}
-                angle={-45}
-                textAnchor="end"
-                interval={0}
-                height={60}
-              />
-              <Tooltip contentStyle={{ backgroundColor: '#1a202c', borderColor: '#4a5568' }} itemStyle={{ color: '#e2e8f0' }} />
-              <Bar dataKey="votes" fill="#ffffff" />
-            </BarChart>
-          </ResponsiveContainer>
-        </>
-      ) : (
-        <HistoricalDataDisplay currentLocation={currentLocation} />
-      )}
-    </div>
+          {showGraph ? (
+            <>
+              <h3 className="text-xl font-semibold mb-2 text-white">Community Votes</h3>
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={pollData} margin={{ top: 10, right: 10, left: 0, bottom: 40 }}>
+                  <XAxis
+                    dataKey="category"
+                    tick={{ fill: '#ffffff', fontSize: 8 }}
+                    angle={-45}
+                    textAnchor="end"
+                    interval={0}
+                    height={60}
+                  />
+                  <Tooltip contentStyle={{ backgroundColor: '#1a202c', borderColor: '#4a5568' }} itemStyle={{ color: '#e2e8f0' }} />
+                  <Bar dataKey="votes" fill="#ffffff" />
+                </BarChart>
+              </ResponsiveContainer>
+            </>
+          ) : (
+            <HistoricalDataDisplay currentLocation={currentLocation} />
+          )}
+        </div>
 
-    {/* Time-Lapse Visualization */}
-    <TimeLapseVisualization 
-        plotData={selectedPlot}
-        isVisible={showTimeLapse}    
-      />
-          <HistoricalImageryTimelapse
-        plotData={selectedPlot}
-        isVisible={showTimeLapse}    
-      />
+        {/* Time-Lapse Visualization */}
+        <TimeLapseVisualization
+          plotData={selectedPlot}
+          isVisible={showTimeLapse}
+        />
+        <HistoricalImageryVisualization
+          plotData={selectedPlot}
+          isVisible={showTimeLapse}
+        />
+        <AnimatePresence>
+          {selectedPlot && (
+            <PlotStatusComponent
+              plot={selectedPlot}
+              onStatusUpdate={handleStatusUpdate}
+            />
+          )}
+        </AnimatePresence>
 
         {/* Loading screen */}
         <AnimatePresence>

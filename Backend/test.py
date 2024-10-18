@@ -1,15 +1,11 @@
-import requests
+from pymongo import MongoClient
 
-client_id = '496c242a-8df3-43b3-a4aa-4db85e00e8f2'
-client_secret = 'lrBHf77WZrhZfv3nsv27lcJyTKVtqOjz'
+# Assuming you already have a MongoDB connection
+client = MongoClient("mongodb+srv://abizer:abizer786@cluster0.7x9mozn.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0lrBHf77WZrhZfv3nsv27lcJyTKVtqOjz")
+db = client.get_database("plot_recommendations")
 
-response = requests.post('https://services.sentinel-hub.com/oauth/token',
-    data={
-        'grant_type': 'client_credentials',
-        'client_id': client_id,
-        'client_secret': client_secret,
-    }
-)
+# Create a new collection for plot status
+plot_status_collection = db.plot_status
 
-token = response.json()['access_token']
-print(f"Your API key (OAuth token): {token}")
+# Create a unique index on latitude and longitude
+plot_status_collection.create_index([("latitude", 1), ("longitude", 1)], unique=True)
