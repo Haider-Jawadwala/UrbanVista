@@ -69,6 +69,9 @@ export default function Dashboard() {
   const [currentFact, setCurrentFact] = useState('');
   const [selectedPlot, setSelectedPlot] = useState(null);
   const [showTimeLapse, setShowTimeLapse] = useState(false);
+  const firstDivRef = useRef(null);
+  const [firstDivBounds, setFirstDivBounds] = useState({ left: 0, top: 0, right: 0, bottom: 0 });
+
   const VRIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <path d="M21 8c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V8z" />
@@ -89,6 +92,17 @@ export default function Dashboard() {
     "Healthcare Facility",
     "Mixed-Use Development"
   ]);
+  useEffect(() => {
+    if (firstDivRef.current) {
+      const rect = firstDivRef.current.getBoundingClientRect();
+      setFirstDivBounds({
+        left: 0,
+        top: 0,
+        right: rect.width - 384, // Subtracting the width of the TimeLapseVisualization component (96 * 4 = 384)
+        bottom: rect.height - 250 // Subtracting the height of the TimeLapseVisualization component
+      });
+    }
+  }, []);
 
   useEffect(() => {
     // Set initial random fact
@@ -409,109 +423,125 @@ export default function Dashboard() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="h-screen relative">
-        {/* Earth component (centered and full-screen) */}
-        <div className="absolute inset-0 z-0">
-          <Earth
-            plotData={plotData}
-            onMarkerClick={handleMarkerClick}
-            historicalLocation={isHistoricalMappingActive ? currentLocation : null}
-            highlightedPlot={highlightedPlot}
+      <main className="h-screen relative overflow-y-scroll">
+        {/* First Division */}
+        <div className="h-screen w-full relative" ref={firstDivRef}>
+          {/* Earth component (centered and full-screen) */}
+          <div className="absolute inset-0 z-0">
+            <Earth
+              plotData={plotData}
+              onMarkerClick={handleMarkerClick}
+              historicalLocation={isHistoricalMappingActive ? currentLocation : null}
+              highlightedPlot={highlightedPlot}
+            />
+          </div>
+
+          {/* Search bar and button (top-left corner) */}
+          <div className="absolute top-14 left-4 z-10 w-96 ">
+            <form onSubmit={findPlots} className="bg-black p-4 rounded-lg shadow-md">
+              <input
+                type="text"
+                value={city}
+                onChange={(e) => setCity(e.target.value)}
+                className="border p-2 rounded w-full mb-2 focus:outline-none focus:ring-2 focus:ring-blue-400 bg-gray-700 text-white"
+                placeholder="Enter city name"
+              />
+              <button
+                type="submit"
+                className="bg-gray-700 text-white p-2 rounded w-full font-semibold hover:bg-gray-600"
+              >
+                Find Empty Plots
+              </button>
+            </form>
+          </div>
+
+          {/* Recommendations (top-right corner) */}
+          <div className="absolute top-14 right-4 z-10 w-96 max-h-64 overflow-y-auto bg-black p-4 rounded-lg shadow-md">
+            <div className="flex justify-between items-center mb-2">
+              <h3 className="text-xl font-semibold text-white">Recommendations:</h3>
+              <CustomTooltip content="VR Visualization">
+                <button
+                  className="bg-gray-700 hover:bg-gray-600 text-white p-2 rounded-full"
+                  onClick={() => console.log('VR mode activated')}
+                  aria-label="Activate VR mode"
+                >
+                  <VRIcon />
+                </button>
+              </CustomTooltip>
+            </div>
+            {recommendations.length > 0 ? (
+              <ul className="list-disc pl-5 text-white">
+                {recommendations.map((recommendation, index) => (
+                  <li key={index}>{recommendation}</li>
+                ))}
+              </ul>
+            ) : (
+              <p className="text-white">Click "Find Empty Plots" to get recommendations for development in the selected area.</p>
+            )}
+          </div>
+
+          {/* Poll (bottom-right corner) */}
+          <div className="absolute bottom-4 right-4 z-10 w-96 bg-black p-4 rounded-lg shadow-md">
+            {showRecommendationPoll ? <RecommendationPoll /> : <EnvironmentalFact />}
+          </div>
+
+          {/* Graph or Historical Data (bottom-left corner) */}
+          <div className="absolute bottom-4 left-4 z-10 w-96 h-64 bg-black p-4 rounded-lg shadow-md">
+            {showGraph ? (
+              <>
+                <h3 className="text-xl font-semibold mb-2 text-white">Community Votes</h3>
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={pollData} margin={{ top: 10, right: 10, left: 0, bottom: 40 }}>
+                    <XAxis
+                      dataKey="category"
+                      tick={{ fill: '#ffffff', fontSize: 8 }}
+                      angle={-45}
+                      textAnchor="end"
+                      interval={0}
+                      height={60}
+                    />
+                    <Tooltip contentStyle={{ backgroundColor: '#1a202c', borderColor: '#4a5568' }} itemStyle={{ color: '#e2e8f0' }} />
+                    <Bar dataKey="votes" fill="#ffffff" />
+                  </BarChart>
+                </ResponsiveContainer>
+              </>
+            ) : (
+              <HistoricalDataDisplay currentLocation={currentLocation} />
+            )}
+          </div>
+
+          {/* Time-Lapse Visualization */}
+          <TimeLapseVisualization
+            plotData={selectedPlot}
+            isVisible={showTimeLapse}
+            bounds={firstDivBounds}
           />
         </div>
 
-        {/* Search bar and button (top-left corner) */}
-        <div className="absolute top-14 left-4 z-10 w-96 ">
-          <form onSubmit={findPlots} className="bg-black p-4 rounded-lg shadow-md">
-            <input
-              type="text"
-              value={city}
-              onChange={(e) => setCity(e.target.value)}
-              className="border p-2 rounded w-full mb-2 focus:outline-none focus:ring-2 focus:ring-blue-400 bg-gray-700 text-white"
-              placeholder="Enter city name"
+        <div className="h-screen w-full bg-black relative flex">
+          {/* Historical Imagery Visualization */}
+          <div className="w-full h-full flex">
+          <div className="mt-24 w-1/2 h-3/4">
+            <HistoricalImageryVisualization
+              plotData={selectedPlot}
+              isVisible={showTimeLapse}
+              constraintsRef={firstDivRef}
             />
-            <button
-              type="submit"
-              className="bg-gray-700 text-white p-2 rounded w-full font-semibold hover:bg-gray-600"
-            >
-              Find Empty Plots
-            </button>
-          </form>
-        </div>
-
-        {/* Recommendations (top-right corner) */}
-        <div className="absolute top-14 right-4 z-10 w-96 max-h-64 overflow-y-auto bg-black p-4 rounded-lg shadow-md">
-          <div className="flex justify-between items-center mb-2">
-            <h3 className="text-xl font-semibold text-white">Recommendations:</h3>
-            <CustomTooltip content="VR Visualization">
-              <button
-                className="bg-gray-700 hover:bg-gray-600 text-white p-2 rounded-full"
-                onClick={() => console.log('VR mode activated')}
-                aria-label="Activate VR mode"
-              >
-                <VRIcon />
-              </button>
-            </CustomTooltip>
           </div>
-          {recommendations.length > 0 ? (
-            <ul className="list-disc pl-5 text-white">
-              {recommendations.map((recommendation, index) => (
-                <li key={index}>{recommendation}</li>
-              ))}
-            </ul>
-          ) : (
-            <p className="text-white">Click "Find Empty Plots" to get recommendations for development in the selected area.</p>
-          )}
+
+          {/* Plot Status Component */}
+          <div className="absolute mt-12 right-4 w-1/2 h-full">
+            <AnimatePresence>
+              {selectedPlot && (
+                <PlotStatusComponent
+                  plot={selectedPlot}
+                  onStatusUpdate={handleStatusUpdate}
+                />
+              )}
+            </AnimatePresence>
+          </div>
         </div>
-
-        {/* Poll (bottom-right corner) */}
-        <div className="absolute bottom-4 right-4 z-10 w-96 bg-black p-4 rounded-lg shadow-md">
-          {showRecommendationPoll ? <RecommendationPoll /> : <EnvironmentalFact />}
         </div>
-
-        {/* Graph or Historical Data (bottom-left corner) */}
-        <div className="absolute bottom-4 left-4 z-10 w-96 h-64 bg-black p-4 rounded-lg shadow-md">
-          {showGraph ? (
-            <>
-              <h3 className="text-xl font-semibold mb-2 text-white">Community Votes</h3>
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={pollData} margin={{ top: 10, right: 10, left: 0, bottom: 40 }}>
-                  <XAxis
-                    dataKey="category"
-                    tick={{ fill: '#ffffff', fontSize: 8 }}
-                    angle={-45}
-                    textAnchor="end"
-                    interval={0}
-                    height={60}
-                  />
-                  <Tooltip contentStyle={{ backgroundColor: '#1a202c', borderColor: '#4a5568' }} itemStyle={{ color: '#e2e8f0' }} />
-                  <Bar dataKey="votes" fill="#ffffff" />
-                </BarChart>
-              </ResponsiveContainer>
-            </>
-          ) : (
-            <HistoricalDataDisplay currentLocation={currentLocation} />
-          )}
-        </div>
-
-        {/* Time-Lapse Visualization */}
-        <TimeLapseVisualization
-          plotData={selectedPlot}
-          isVisible={showTimeLapse}
-        />
-        <HistoricalImageryVisualization
-          plotData={selectedPlot}
-          isVisible={showTimeLapse}
-        />
-        <AnimatePresence>
-          {selectedPlot && (
-            <PlotStatusComponent
-              plot={selectedPlot}
-              onStatusUpdate={handleStatusUpdate}
-            />
-          )}
-        </AnimatePresence>
-
         {/* Loading screen */}
         <AnimatePresence>
           {loading && (

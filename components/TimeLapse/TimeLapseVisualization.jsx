@@ -1,13 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { motion } from 'framer-motion';
-import { MathUtils } from 'three';
+import Draggable from 'react-draggable';
 
 const MAPBOX_ACCESS_TOKEN = 'pk.eyJ1IjoiYWJpemVyNzg2IiwiYSI6ImNtMXBib3QzNDAyaXMyanM2NHozZ2UzMG4ifQ.ORflOjRbApQD8WOMkE3j-Q';
 
-const TimeLapseVisualization = ({ plotData, isVisible }) => {
+const TimeLapseVisualization = ({ plotData, isVisible, bounds }) => {
   const [images, setImages] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isDragging, setIsDragging] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -76,83 +74,69 @@ const TimeLapseVisualization = ({ plotData, isVisible }) => {
       fetchImages();
     }
     return () => {
-      // Clean up object URLs
       images.forEach(image => URL.revokeObjectURL(image.url));
     };
   }, [plotData, fetchImages]);
 
   useEffect(() => {
     let interval;
-    if (images.length > 0 && !isLoading && !isDragging) {
+    if (images.length > 0 && !isLoading) {
       interval = setInterval(() => {
         setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
       }, 3000);
     }
     return () => clearInterval(interval);
-  }, [images, isLoading, isDragging]);
-
-  const handleDragStart = () => setIsDragging(true);
-  const handleDragEnd = () => setIsDragging(false);
+  }, [images, isLoading]);
 
   if (!isVisible) return null;
 
   return (
-    <motion.div
-      className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 bg-black p-4 rounded-lg shadow-lg w-96 "
-      drag
-      dragMomentum={false}
-      onDragStart={handleDragStart}
-      onDragEnd={handleDragEnd}
-      initial={{ opacity: 0, scale: 0.8 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.5 }}
-    >
-      <h3 className="text-white text-lg font-semibold mb-2">Area Visualization</h3>
-      <div className="relative w-[340px] h-[250px]">
-        {isLoading ? (
-          <div className="flex items-center justify-center w-full h-full">
-            <p className="text-white">Loading images...</p>
-          </div>
-        ) : error ? (
-          <div className="flex items-center justify-center w-full h-full">
-            <p className="text-red-500">{error}</p>
-          </div>
-        ) : images.length > 0 ? (
-          <>
-            <img
-              src={images[currentIndex].url}
-              alt={`Satellite image: ${images[currentIndex].label}`}
-              className="w-full h-full object-cover rounded"
-            />
-            <div className="absolute bottom-2 left-2 bg-black bg-opacity-50 text-white px-2 py-1 rounded">
-              {images[currentIndex].label}
+    <Draggable bounds={bounds}>
+      <div className="absolute z-50 bg-black p-4 rounded-lg shadow-lg w-96 cursor-move">
+        <h3 className="text-white text-lg font-semibold mb-2">Area Visualization</h3>
+        <div className="relative w-[340px] h-[180px]">
+          {isLoading ? (
+            <div className="flex items-center justify-center w-full h-full">
+              <p className="text-white">Loading images...</p>
             </div>
-          </>
-        ) : (
-          <div className="flex items-center justify-center w-full h-full">
-            <p className="text-white">No images available</p>
+          ) : error ? (
+            <div className="flex items-center justify-center w-full h-full">
+              <p className="text-red-500">{error}</p>
+            </div>
+          ) : images.length > 0 ? (
+            <>
+              <img
+                src={images[currentIndex].url}
+                alt={`Satellite image: ${images[currentIndex].label}`}
+                className="w-full h-full object-cover rounded"
+              />
+              <div className="absolute bottom-2 left-2 bg-black bg-opacity-50 text-white px-2 py-1 rounded">
+                {images[currentIndex].label}
+              </div>
+            </>
+          ) : (
+            <div className="flex items-center justify-center w-full h-full">
+              <p className="text-white">No images available</p>
+            </div>
+          )}
+        </div>
+        {plotData && (
+          <div className="mt-4 text-white">
+            <h4 className="font-semibold mb-2">Plot Details:</h4>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <p>Lat: {plotData.lat}</p>
+                
+                {plotData.size && <p>Area: {Math.round(plotData.size)} sq meters</p>}
+              </div>
+              <div>
+              <p>Lon: {plotData.lon}</p>
+              </div>
+            </div>
           </div>
         )}
       </div>
-      {plotData && (
-        <div className="mt-4 text-white">
-          <h4 className="font-semibold mb-2">Plot Details:</h4>
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <p>Latitude: {plotData.lat}</p>
-              <p>Longitude: {plotData.lon}</p>
-              {plotData.size && <p>Area: {Math.round(plotData.size)} sq meters</p>}
-            </div>
-            <div>
-              {plotData.boundaries && <p>North: {plotData.boundaries.north}</p>}
-              {plotData.boundaries && <p>South: {plotData.boundaries.south}</p>}
-              {plotData.boundaries && <p>West: {plotData.boundaries.west}</p>}
-              {plotData.boundaries && <p>East: {plotData.boundaries.east}</p>}
-            </div>
-          </div>
-        </div>
-      )}
-    </motion.div>
+    </Draggable>
   );
 };
 
