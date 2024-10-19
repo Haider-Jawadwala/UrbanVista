@@ -19,7 +19,10 @@ from fastapi import Form
 from fastapi.responses import JSONResponse
 from typing import Optional, Dict
 import json
-
+from bson import json_util
+import re
+from gradio_client import Client
+import shutil
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
@@ -48,6 +51,10 @@ NLU_URL = os.getenv("NLU_URL")
 
 # Gemini API setup
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+
+GRADIO_CLIENT_ID= os.getenv("GRADIO_ADDRESS")
+
+
 
 # Geonames API setup
 GEONAMES_USERNAME = os.getenv("GEONAMES_USERNAME")
@@ -213,6 +220,9 @@ def get_recommendations(lat, lon, population, climate, nearby_places_summary, po
         concepts = [concept['text'] for concept in nlu_response.get('concepts', [])]
 
         # Prepare input for Gemini
+        # In the get_recommendations function, modify the Gemini input and parsing:
+
+        # Prepare input for Gemini
         gemini_input = f"""
         Based on the following analysis of an empty plot, provide 3-5 specific development recommendations:
 
@@ -227,21 +237,37 @@ def get_recommendations(lat, lon, population, climate, nearby_places_summary, po
         Categories: {', '.join(categories)}
         Concepts: {', '.join(concepts)}
 
-        For each recommendation, provide a brief one-line explanation of why it's suitable, considering both area characteristics and public opinion.
-        Format each recommendation as: "Recommendation: Explanation"
+        For each recommendation, provide:
+        1. A brief one-line explanation of why it's suitable, considering both area characteristics and public opinion.
+        2. A detailed description of how the development would look and fit into the surrounding area (for image generation purposes).
+
+        Format your response as a JSON object where each key is a short title for the recommendation, and the value is an object containing "explanation" and "description" fields.
+        Example:
+        {{
+            "Community Center": {{
+                "explanation": "Addresses the lack of social spaces and aligns with public desire for community facilities",
+                "description": "A modern two-story building with large windows, surrounded by green space. The exterior features a mix of brick and wood paneling, with a spacious parking area. Inside, there are multipurpose rooms, a gym, and a cafeteria. The landscaping includes walking paths and a small playground."
+            }},
+            "Green Park": {{
+                "explanation": "Enhances environmental quality and meets the demand for open spaces in a densely populated area",
+                "description": "A sprawling park with winding paths, mature trees, and open grassy areas. Features include a central fountain, flower gardens, benches, and a dedicated area for outdoor fitness equipment. The park is designed with sustainability in mind, incorporating native plants and rainwater collection systems."
+            }}
+        }}
         """
 
-        # Call Gemini API
+       # Call Gemini API
         model = genai.GenerativeModel('gemini-pro')
         response = model.generate_content(gemini_input)
 
-        # Extract recommendations from Gemini response
-        recommendations = response.text.split('\n')
+        json_string = re.sub(r'```json\s*|\s*```', '', response.text)
+        try:
+            recommendations = json.loads(json_string)
+            print (recommendations)
+        except json.JSONDecodeError:
+            logger.error(f"Error parsing Gemini response as JSON: {json_string}")
+            recommendations = {}
 
-        # Limit to top 5 recommendations
-        recommendations = recommendations[:5]
-
-        return "Recommendations:\n" + "\n".join(recommendations)
+        return recommendations
     except Exception as e:
         logger.error(f"Error in get_recommendations: {str(e)}")
         return f"Error generating recommendations. Please try again later. Error details: {str(e)}"
@@ -356,6 +382,48 @@ def calculate_plot_size(coordinates):
     coord_2 = (center_lat + 0.001, center_lon + 0.001)  # Move slightly to calculate distance
     meters_per_degree = geopy.distance.distance(coord_1, coord_2).meters / 0.001
     return area * (meters_per_degree ** 2)
+
+@app.post("/api/image_process")
+async def image_process(description: str = Form(...), recommendation_title: str = Form(...)):
+    logger.info(description)
+    try:
+        # Check if the image already exists
+        public_folder = r"D:\Projects New\IBM\nextjs-tailwind-landing-page-main\public"
+        generated_images_folder = os.path.join(public_folder, "generated_images")
+        os.makedirs(generated_images_folder, exist_ok=True)
+        
+        # Create a safe filename from the recommendation title
+        safe_filename = "".join(x for x in recommendation_title if x.isalnum() or x in [' ', '-', '_']).rstrip()
+        safe_filename = safe_filename.replace(' ', '_') + '.png'
+        destination_path = os.path.join(generated_images_folder, safe_filename)
+        
+        # If the image already exists, return its URL
+        if os.path.exists(destination_path):
+            image_url = f"/generated_images/{safe_filename}"
+            return JSONResponse(content={"image_url": image_url})
+        
+        # If the image doesn't exist, generate it
+        client = Client("https://afb60fc71417057dce.gradio.live/")
+        result = client.predict(
+            description,
+            False,  # upscale parameter
+            api_name="/generate_with_update"
+        )
+        
+        # Assuming the result is a tuple and the first element is the image path
+        source_image_path = result[0]
+        
+        # Copy the image to the public folder with the new filename
+        shutil.copy2(source_image_path, destination_path)
+        
+        # The URL that the frontend will use to access the image
+        image_url = f"/generated_images/{safe_filename}"
+        
+        return JSONResponse(content={"image_url": image_url})
+    except Exception as e:
+        logger.error(f"Error in image_process: {str(e)}")
+        logger.exception("Full traceback:")
+        return JSONResponse(content={"error": f"An error occurred: {str(e)}"}, status_code=500)
 
 @app.post("/api/get-empty-plots")
 async def get_empty_plots_route(city: str = Form(...)):
