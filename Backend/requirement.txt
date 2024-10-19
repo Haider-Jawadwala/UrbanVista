@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+requests
+ibm-watson
+python-dotenv
+google-generativeai
+pymongo
+geopy
+python-multipart
+aiofiles
