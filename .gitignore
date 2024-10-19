@@ -38,3 +38,7 @@ yarn-error.log*
 .venv
 # typescript
 *.tsbuildinfo
+
+/public/generated_images
+
+/Backend/.env
