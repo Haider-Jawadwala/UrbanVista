@@ -172,7 +172,7 @@ def summarize_nearby_places(nearby_places):
             summary[place] = 1
     return summary
 
-def get_recommendations(lat, lon, population, climate, nearby_places_summary, poll_data):
+def get_recommendations(lat, lon, population, climate, nearby_places_summary, poll_data, size):
     places_description = ", ".join([f"{place}: {count}" for place, count in nearby_places_summary.items()])
     logger.info(places_description)
 
@@ -187,7 +187,8 @@ def get_recommendations(lat, lon, population, climate, nearby_places_summary, po
     - Population: Approximately {population} people nearby
     - Climate: {climate}
     - Nearby places: {places_description}
-    
+    - Plot size: {size} square meters
+
     Public opinion (based on votes):
     {poll_description}
 
@@ -197,6 +198,7 @@ def get_recommendations(lat, lon, population, climate, nearby_places_summary, po
     3. Address any gaps in services or amenities
     4. Be suitable for the climate conditions
     5. Match the population density
+    6. Be appropriate for the given plot size
 
     For each suggestion, provide a brief one-line explanation of why it's recommended, considering both the area characteristics and public opinion.
     """
@@ -220,9 +222,6 @@ def get_recommendations(lat, lon, population, climate, nearby_places_summary, po
         concepts = [concept['text'] for concept in nlu_response.get('concepts', [])]
 
         # Prepare input for Gemini
-        # In the get_recommendations function, modify the Gemini input and parsing:
-
-        # Prepare input for Gemini
         gemini_input = f"""
         Based on the following analysis of an empty plot, provide 3-5 specific development recommendations:
 
@@ -230,6 +229,7 @@ def get_recommendations(lat, lon, population, climate, nearby_places_summary, po
         Population: Approximately {population} people nearby
         Climate: {climate}
         Nearby places: {places_description}
+        Plot size: {size} square meters
         Public opinion: {poll_description}
 
         Key aspects identified:
@@ -238,31 +238,32 @@ def get_recommendations(lat, lon, population, climate, nearby_places_summary, po
         Concepts: {', '.join(concepts)}
 
         For each recommendation, provide:
-        1. A brief one-line explanation of why it's suitable, considering both area characteristics and public opinion.
-        2. A detailed description of how the development would look and fit into the surrounding area (for image generation purposes).
+        1. A brief one-line explanation of why it's suitable, considering area characteristics and public opinion.
+        2. A detailed description of how the development would look and fit into the surrounding area, explicitly mentioning how it utilizes the {size} square meter plot size.
 
         Format your response as a JSON object where each key is a short title for the recommendation, and the value is an object containing "explanation" and "description" fields.
+        strictly follow this format
         Example:
         {{
             "Community Center": {{
                 "explanation": "Addresses the lack of social spaces and aligns with public desire for community facilities",
-                "description": "A modern two-story building with large windows, surrounded by green space. The exterior features a mix of brick and wood paneling, with a spacious parking area. Inside, there are multipurpose rooms, a gym, and a cafeteria. The landscaping includes walking paths and a small playground."
+                "description": "A modern two-story building utilizing the entire {size} square meter plot. The exterior features a mix of brick and wood paneling, with a spacious parking area. Inside, there are multipurpose rooms, a gym, and a cafeteria. The remaining space is used for landscaping, including walking paths and a small playground, maximizing the use of the {size} square meter area."
             }},
             "Green Park": {{
                 "explanation": "Enhances environmental quality and meets the demand for open spaces in a densely populated area",
-                "description": "A sprawling park with winding paths, mature trees, and open grassy areas. Features include a central fountain, flower gardens, benches, and a dedicated area for outdoor fitness equipment. The park is designed with sustainability in mind, incorporating native plants and rainwater collection systems."
+                "description": "A sprawling park covering the full {size} square meters with winding paths, mature trees, and open grassy areas. The park's layout is designed to make optimal use of the {size} square meter plot, featuring a central fountain, flower gardens, benches, and a dedicated area for outdoor fitness equipment. The park incorporates native plants and rainwater collection systems to maximize sustainability within the given area."
             }}
         }}
         """
 
-       # Call Gemini API
+        # Call Gemini API
         model = genai.GenerativeModel('gemini-pro')
         response = model.generate_content(gemini_input)
 
         json_string = re.sub(r'```json\s*|\s*```', '', response.text)
         try:
             recommendations = json.loads(json_string)
-            print (recommendations)
+            print(recommendations)
         except json.JSONDecodeError:
             logger.error(f"Error parsing Gemini response as JSON: {json_string}")
             recommendations = {}
@@ -271,7 +272,7 @@ def get_recommendations(lat, lon, population, climate, nearby_places_summary, po
     except Exception as e:
         logger.error(f"Error in get_recommendations: {str(e)}")
         return f"Error generating recommendations. Please try again later. Error details: {str(e)}"
-
+        
 def summarize_poll_data(poll_data):
     summary = {}
     for item in poll_data:
@@ -388,7 +389,7 @@ async def image_process(description: str = Form(...), recommendation_title: str 
     logger.info(description)
     try:
         # Check if the image already exists
-        public_folder = r"D:\Projects New\IBM\nextjs-tailwind-landing-page-main\public"
+        public_folder = r"../public/"
         generated_images_folder = os.path.join(public_folder, "generated_images")
         os.makedirs(generated_images_folder, exist_ok=True)
         
@@ -403,7 +404,7 @@ async def image_process(description: str = Form(...), recommendation_title: str 
             return JSONResponse(content={"image_url": image_url})
         
         # If the image doesn't exist, generate it
-        client = Client("https://afb60fc71417057dce.gradio.live/")
+        client = Client(GRADIO_CLIENT_ID)
         result = client.predict(
             description,
             False,  # upscale parameter
@@ -527,7 +528,7 @@ async def get_poll_data(lat: float, lon: float):
         logger.error(f"Error in get_poll_data route: {str(e)}")
         return JSONResponse(content={"error": f"An error occurred: {str(e)}"}, status_code=500)
 @app.post("/api/get-recommendations")
-async def get_recommendations_route(lat: float = Form(...), lon: float = Form(...)):
+async def get_recommendations_route(lat: float = Form(...), lon: float = Form(...), size: float = Form(...)):
     try:
         population, nearby_places = get_population_and_places(lat, lon)
         climate = get_climate(lat, lon)
@@ -537,9 +538,9 @@ async def get_recommendations_route(lat: float = Form(...), lon: float = Form(..
 
         # Retrieve existing poll data
         poll_data = list(poll_collection.find({"lat": lat, "lon": lon}))
-        
+
         # Generate recommendations including poll data
-        recommendations = get_recommendations(lat, lon, population, climate, nearby_places_summary, poll_data)
+        recommendations = get_recommendations(lat, lon, population, climate, nearby_places_summary, poll_data, size)
 
         # Convert ObjectId to string for JSON serialization
         poll_data = json.loads(json_util.dumps(poll_data))
@@ -555,7 +556,7 @@ async def get_recommendations_route(lat: float = Form(...), lon: float = Form(..
     except Exception as e:
         logger.error(f"Error in get_recommendations_route: {str(e)}")
         return JSONResponse(content={"error": f"An error occurred: {str(e)}"}, status_code=500)
-    
+        
 def ensure_uploads_directory():
     uploads_dir = "uploads"
     if not os.path.exists(uploads_dir):

@@ -213,12 +213,14 @@ export default function Dashboard() {
     }
   };
 
-  const fetchRecommendations = async (lat, lon) => {
+  const fetchRecommendations = async (lat, lon,size) => {
     setLoading(true);
     try {
       const formData = new FormData();
       formData.append('lat', lat);
       formData.append('lon', lon);
+      formData.append('size', size || 5000); // Use 5000 as default if size is not available
+
 
       const response = await fetch('http://localhost:8000/api/get-recommendations', {
         method: 'POST',
@@ -298,7 +300,7 @@ export default function Dashboard() {
     const plot = plotData[index];
     setSelectedPlot(plot);
     setShowTimeLapse(true);
-    fetchRecommendations(plot.lat, plot.lon);
+    fetchRecommendations(plot.lat, plot.lon,plot.size);
   };
 
   const handleVote = async (category) => {
