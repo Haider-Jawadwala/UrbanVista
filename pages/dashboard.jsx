@@ -9,6 +9,7 @@ import environmentalFacts from '../data/environmentalFacts';
 import TimeLapseVisualization from '../components/TimeLapse/TimeLapseVisualization';
 import HistoricalImageryVisualization from '../components/Historical/HistoricalImageryVisualization';
 import PlotStatusComponent from '../components/PlotStatus/PlotStatusComponent';
+import ThreeJS360View from '../components/360view/ThreeJS360View';
 
 const Earth = dynamic(() => import('../components/EarthDash/earthdash'), { ssr: false });
 
@@ -71,6 +72,9 @@ export default function Dashboard() {
   const [showTimeLapse, setShowTimeLapse] = useState(false);
   const firstDivRef = useRef(null);
   const [firstDivBounds, setFirstDivBounds] = useState({ left: 0, top: 0, right: 0, bottom: 0 });
+  const [loading360View, setLoading360View] = useState(false);
+  const [image360Url, setImage360Url] = useState(null);
+  const [selectedRecommendation, setSelectedRecommendation] = useState(null);
 
   const VRIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -229,16 +233,16 @@ export default function Dashboard() {
         population: data.population,
         climate: data.climate,
       });
+      
 
-      // Parse recommendations only if it's a string
-      if (typeof data.recommendations === 'string') {
-        const recommendationList = data.recommendations.split('\n').filter(item => item.trim() !== '');
-        setRecommendations(recommendationList);
-      } else if (Array.isArray(data.recommendations)) {
-        setRecommendations(data.recommendations);
-      } else {
-        setRecommendations([]);
-      }
+      // Convert recommendations object to array of objects
+      const recommendationsArray = Object.entries(data.recommendations).map(([title,{explanation,description}]) => ({
+        title,
+        explanation,
+        description
+      }));
+      console.log(recommendationsArray);
+      setRecommendations(recommendationsArray);
 
       // Fetch poll data separately
       await fetchPollData(lat, lon);
@@ -248,6 +252,39 @@ export default function Dashboard() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleRecommendationClick = async (recommendation) => {
+    setSelectedRecommendation(recommendation);
+    setLoading360View(true);
+    console.log(recommendation.description);
+  
+    try {
+      const formData = new FormData();
+      formData.append('description', recommendation.description);
+      formData.append('recommendation_title', recommendation.title);
+  
+      const response = await fetch('http://localhost:8000/api/image_process', {
+        method: 'POST',
+        body: formData,
+      });
+  
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+  
+      const data = await response.json();
+      console.log(data.image_url);
+      setImage360Url(data.image_url);
+    } catch (error) {
+      console.error('Error generating 360 image:', error);
+    } finally {
+      setLoading360View(false);
+    }
+  };
+
+  const close360View = () => {
+    setImage360Url(null);
   };
 
   const handleStatusUpdate = (status) => {
@@ -456,29 +493,63 @@ export default function Dashboard() {
           </div>
 
           {/* Recommendations (top-right corner) */}
-          <div className="absolute top-14 right-4 z-10 w-96 max-h-64 overflow-y-auto bg-black p-4 rounded-lg shadow-md">
-            <div className="flex justify-between items-center mb-2">
-              <h3 className="text-xl font-semibold text-white">Recommendations:</h3>
-              <CustomTooltip content="VR Visualization">
-                <button
-                  className="bg-gray-700 hover:bg-gray-600 text-white p-2 rounded-full"
-                  onClick={() => console.log('VR mode activated')}
-                  aria-label="Activate VR mode"
-                >
-                  <VRIcon />
-                </button>
-              </CustomTooltip>
-            </div>
-            {recommendations.length > 0 ? (
-              <ul className="list-disc pl-5 text-white">
-                {recommendations.map((recommendation, index) => (
-                  <li key={index}>{recommendation}</li>
-                ))}
-              </ul>
-            ) : (
-              <p className="text-white">Click "Find Empty Plots" to get recommendations for development in the selected area.</p>
-            )}
+        <div className="absolute top-14 right-4 z-10 w-96 max-h-64 overflow-y-auto bg-black p-4 rounded-lg shadow-md">
+          <div className="flex justify-between items-center mb-2">
+            <h3 className="text-xl font-semibold text-white">Recommendations:</h3>
+            <CustomTooltip content="VR Visualization">
+              <button
+                className="bg-gray-700 hover:bg-gray-600 text-white p-2 rounded-full"
+                onClick={() => console.log('VR mode activated')}
+                aria-label="Activate VR mode"
+              >
+                <VRIcon />
+              </button>
+            </CustomTooltip>
           </div>
+          {recommendations.length > 0 ? (
+            <ul className="space-y-2">
+              {recommendations.map((recommendation, index) => (
+                <li 
+                  key={index} 
+                  className="cursor-pointer hover:bg-gray-700 p-2 rounded transition-colors duration-200"
+                  onClick={() => handleRecommendationClick(recommendation)}
+                >
+                  <h4 className="font-semibold">{recommendation.title}</h4>
+                  <p className="text-sm text-gray-300">{recommendation.explanation}</p>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="text-white">Click "Find Empty Plots" to get recommendations for development in the selected area.</p>
+          )}
+        </div>
+        {/* 360 View */}
+        <AnimatePresence>
+          {image360Url && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-[9999] flex items-center justify-center"
+            >
+              <ThreeJS360View imageUrl={image360Url} onClose={close360View} />
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+      {/* Loading animation for 360 View */}
+      <AnimatePresence>
+        {loading360View && (
+          <motion.div
+            className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <div className="loading-circle"></div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
           {/* Poll (bottom-right corner) */}
           <div className="absolute bottom-4 right-4 z-10 w-96 bg-black p-4 rounded-lg shadow-md">
