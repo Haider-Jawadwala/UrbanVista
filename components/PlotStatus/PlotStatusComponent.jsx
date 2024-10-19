@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import { useRouter } from 'next/router';
 
 const PlotStatusComponent = ({ plot, onStatusUpdate }) => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
+  const router = useRouter();
 
   const handleDrag = (event, info) => {
     setPosition({ x: info.point.x, y: info.point.y });
@@ -23,7 +24,6 @@ const PlotStatusComponent = ({ plot, onStatusUpdate }) => {
       const data = await response.json();
       console.log(data.message);
 
-      // Call the onStatusUpdate prop to inform the parent component
       onStatusUpdate(status);
     } catch (error) {
       console.error('Error:', error);
@@ -31,15 +31,12 @@ const PlotStatusComponent = ({ plot, onStatusUpdate }) => {
   };
 
   const handleFunding = () => {
-    alert('Funding button clicked!');
+    // Navigate to the payment page
+    router.push('/payment');
   };
 
   return (
-    <motion.div
-      drag
-      dragMomentum={false}
-      onDrag={handleDrag}
-      initial={{ x: 0, y: 0 }}
+    <div
       style={{
         position: 'absolute',
         left: position.x,
@@ -72,7 +69,7 @@ const PlotStatusComponent = ({ plot, onStatusUpdate }) => {
           </button>
         )}
       </div>
-    </motion.div>
+    </div>
   );
 };
 
