@@ -96,6 +96,23 @@ export default function Dashboard() {
     "Healthcare Facility",
     "Mixed-Use Development"
   ]);
+
+  const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
+  const [searchOptions, setSearchOptions] = useState({
+    area: '',
+    projectType: 'any',
+  });
+
+  const projectTypes = [
+    { value: 'any', label: 'Any Type' },
+    { value: 'environmental', label: 'Environmental' },
+    { value: 'infrastructure', label: 'Infrastructure' },
+    { value: 'residential', label: 'Residential' },
+    { value: 'commercial', label: 'Commercial' },
+    { value: 'industrial', label: 'Industrial' },
+    { value: 'mixed', label: 'Mixed Use' },
+  ];
+
   useEffect(() => {
     if (firstDivRef.current) {
       const rect = firstDivRef.current.getBoundingClientRect();
@@ -178,6 +195,14 @@ export default function Dashboard() {
     const cityOnly = suggestion.split(',')[0].trim();
     setCity(cityOnly);
     setSuggestions([]);
+  };
+
+  const handleSearchOptionsChange = (e) => {
+    const { name, value } = e.target;
+    setSearchOptions(prev => ({
+      ...prev,
+      [name]: value
+    }));
   };
 
   const findPlots = async (e) => {
@@ -475,24 +500,78 @@ export default function Dashboard() {
             />
           </div>
 
-          {/* Search bar and button (top-left corner) */}
-          <div className="absolute top-14 left-4 z-10 w-96 ">
-            <form onSubmit={findPlots} className="bg-black p-4 rounded-lg shadow-md">
-              <input
-                type="text"
-                value={city}
-                onChange={(e) => setCity(e.target.value)}
-                className="border p-2 rounded w-full mb-2 focus:outline-none focus:ring-2 focus:ring-blue-400 bg-gray-700 text-white"
-                placeholder="Enter city name"
-              />
-              <button
-                type="submit"
-                className="bg-gray-700 text-white p-2 rounded w-full font-semibold hover:bg-gray-600"
-              >
-                Find Empty Plots
-              </button>
-            </form>
-          </div>
+          {/* Updated Search bar and button (top-left corner) */}
+      <div className="absolute top-14 left-4 z-10 w-96">
+        <form onSubmit={findPlots} className="bg-black p-4 rounded-lg shadow-md">
+          <input
+            type="text"
+            value={city}
+            onChange={(e) => setCity(e.target.value)}
+            className="border p-2 rounded w-full mb-2 focus:outline-none focus:ring-2 focus:ring-blue-400 bg-gray-700 text-white"
+            placeholder="Enter city name"
+          />
+          
+          {/* Advanced Options Toggle */}
+          <button
+            type="button"
+            onClick={() => setShowAdvancedOptions(!showAdvancedOptions)}
+            className="text-blue-400 hover:text-blue-300 text-sm mb-2 flex items-center"
+          >
+            {showAdvancedOptions ? '− ' : '+ '}Additional Options
+          </button>
+
+          {/* Advanced Options Panel */}
+          <motion.div
+            initial={false}
+            animate={{ height: showAdvancedOptions ? 'auto' : 0, opacity: showAdvancedOptions ? 1 : 0 }}
+            transition={{ duration: 0.3 }}
+            className="overflow-hidden"
+          >
+            <div className="space-y-2 mb-2">
+              {/* Area Input */}
+              <div>
+                <label className="block text-sm text-gray-300 mb-1">
+                  Area (square meters)
+                </label>
+                <input
+                  type="number"
+                  name="area"
+                  value={searchOptions.area}
+                  onChange={handleSearchOptionsChange}
+                  placeholder="Enter minimum area"
+                  className="border p-2 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-400 bg-gray-700 text-white text-sm"
+                />
+              </div>
+
+              {/* Project Type Select */}
+              <div>
+                <label className="block text-sm text-gray-300 mb-1">
+                  Project Type
+                </label>
+                <select
+                  name="projectType"
+                  value={searchOptions.projectType}
+                  onChange={handleSearchOptionsChange}
+                  className="border p-2 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-400 bg-gray-700 text-white text-sm"
+                >
+                  {projectTypes.map(type => (
+                    <option key={type.value} value={type.value}>
+                      {type.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+          </motion.div>
+
+          <button
+            type="submit"
+            className="bg-gray-700 text-white p-2 rounded w-full font-semibold hover:bg-gray-600"
+          >
+            Find Empty Plots
+          </button>
+        </form>
+      </div>
 
           {/* Recommendations (top-right corner) */}
         <div className="absolute top-14 right-4 z-10 w-96 max-h-64 overflow-y-auto bg-black p-4 rounded-lg shadow-md">
