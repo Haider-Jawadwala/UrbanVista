@@ -8,3 +8,4 @@ pymongo
 geopy
 python-multipart
 aiofiles
+llama-index-llms-ibm
