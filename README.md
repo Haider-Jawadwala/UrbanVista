@@ -43,7 +43,7 @@ Diagram and step-by-step description of the flow of our solution:
 
 ### Solution demo video
 
-[![Watch the video](./assets/thumbnail.jpg)](https://youtu.be/vOgCOoy_Bx0)
+[![Watch the video](./assets/thumbnail.jpg)](https://youtu.be/0D9Fn8pJ1Vc)
 
 
 ### Project development roadmap
