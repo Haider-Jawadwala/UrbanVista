@@ -1,117 +1,71 @@
-### What you can find useful in this project: 
+# UrbanVista: AI-Powered Urban Planning and Plot Registration
 
-- [x] Responsive design (mobile, tablet, desktop)
-- [x] 'NavBar' freezed when you start scrolling
-- [x] Simple 'Slider' implementation
-- [x] Project build based on TypeScript using Nextjs, TailwindCss
+[![License](https://img.shields.io/badge/License-Apache2-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)  
+[![Community](https://img.shields.io/badge/Join-Community-blue)](https://developer.ibm.com/callforcode/solutions/projects/get-started/)
 
--------
+## Project Summary
 
-### Also below some more interesting things i have learned
+### The issue we are hoping to solve
+Current urban infrastructure suffers from poor planning, leading to inefficient land use and missed opportunities for development. Traditional urban planning methods often rely on outdated data and models that cannot dynamically adjust to growing urban areas.
 
-- Example of freezed NavBar [components/NavigationBar/NavBar.tsx](components/NavigationBar/NavBar.tsx)
+### How our technology solution can help
+UrbanVista leverages AI-driven insights to analyze empty plots across entire cities or specific locations, providing recommendations on optimal land usage based on factors such as climate, population density, and nearby resources. By using real-time satellite imagery and AI recommendations, UrbanVista offers a comprehensive solution to urban planning inefficiencies.
 
-```tsx
-  useEffect(() => {
-    const changeColor = () => {
-      if (window.scrollY >= 90) {
-        setColor("#ffffff");
-        setTextColor("#000000");
-      } else {
-        setColor("transparent");
-        setTextColor("#ffffff");
-      }
-    };
-    window.addEventListener("scroll", changeColor);
-  }, []);
-```
---------
-
-- Slider [components/Slider/Slider.tsx](components/Slider/Slider.tsx)
-
-```tsx
-const Slider = ({ slides }: Props) => {
-  const [current, setCurrent] = useState(0);
-  const length = slides.length;
-
-  const nextSlide = () => {
-    setCurrent(current === length - 1 ? 0 : current + 1);
-  };
-  const prevSlide = () => {
-    setCurrent(current === 0 ? length - 1 : current - 1);
-  };
-
-  if (!Array.isArray(slides) || slides.length <= 0) {
-    return null;
-  }
-
-  return (
-    <div id="gallery" className="max-w-[1240px] mx-auto">
-      <h1 className="text-2xl font-bold text-center p-4">Gallery</h1>
-      <div className="relative flex justify-center p-4">
-        {SliderData.map((slide, index) => {
-          return (
-            <div
-              key={index}
-              className={
-                index === current
-                  ? "opacity-[1] ease-in duration-1000"
-                  : "opacity-0"
-              }
-            >
-              <FaArrowCircleLeft
-                onClick={prevSlide}
-                className="absolute top-[50%] left-[30px] text-white/70 cursor-pointer select-none z-[2]"
-                size={50}
-              />
-              {index === current && (
-                <Image
-                  src={slide.image}
-                  alt="/"
-                  width="1440"
-                  height="600"
-                  objectFit="cover"
-                />
-              )}
-              <FaArrowCircleRight
-                onClick={nextSlide}
-                className="absolute top-[50%] right-[30px] text-white/70 cursor-pointer select-none z-[2]"
-                size={50}
-              />
-            </div>
-          );
-        })}
-      </div>
-    </div>
-  );
-};
-```
-
---------
-
-- Set the root to navigate to different part of the page (please do not forget to put `id="portfolio"` for smooth scrolling)
-```js
-<Link href="/portfolio">My roads</Link>
-```
-
-```js
-const Portfolio = () => {
-    return (
-        <div id="portfolio" className="max-w-[1240px] mx-auto py-16 text-center">
-            <h1 className="font-bold text-2xl p-4">Amazing roads</h1>
-            <div className="grid grid-rows-none md:grid-cols-5 p-4 gap-4">
-                <div className="w-full h-full col-span-2 md:col-span-3 row-span-2">
-                    <Image
-                        src="https://images.unsplash.com/photo-1520595439914-fcbb3a25d924?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1176&q=80"
-                        alt="/"
-                        layout="responsive"
-                        width="677"
-                        height="451"
-                    />
-```
----------
+### Our idea
+UrbanVista uses IBM Watsonx for natural language understanding (NLU) and recommendation generation. Users can search for empty plots in any city and receive AI-based suggestions on how to develop the land in a way that aligns with environmental and infrastructural goals. Users can also view immersive 3D visualizations of the selected plots using technologies like NeRF or instant NeRFs, enhancing the decision-making process.
 
 
-#### Reference:
-- thanks goes to @Clint Briley [youtube](https://www.youtube.com/watch?v=HVyct9EUNP8), [repo](https://github.com/fireclint/NextJS-Tailwind-Responsive)
-- try it out [Pesticide for Chrome](https://chrome.google.com/webstore/detail/pesticide-for-chrome/bakpbgckdnepkmkeaiomhmfcnejndkbi)
+## Technology Implementation
+
+### IBM Watsonx product(s) used
+- **IBM Watsonx NLU**: For processing user queries and generating place-specific recommendations based on various factors such as climate, nearby amenities, and population data.
+- **IBM Watsonx.ai**: For backend processing, generating personalized land usage recommendations based on the analysis of geographical and socio-economic factors.
+
+### Other technologies used
+- **Python**: Backend development and integration with various APIs for data processing.
+- **Custom Fine-tuned Model**: A proprietary model fine-tuned for generating 3D visualizations of plots based on recommendations.
+- **Next.js**: Frontend framework used for building a seamless user interface.
+- **MongoDB**: Database for storing user-submitted plots and other relevant data such as user-registered plots, plot details, and recommendations.
+
+### Key Features
+1. **Weather Dashboard**: Displays the current climate and 5-day weather forecast for a selected location using visually appealing graphs.
+2. **Geographical Data**: Provides detailed geographical information about a selected country, including water reserves, rivers, forests, and national parks.
+3. **Plot Registration**: Allows logged-in users to mark empty plots on a map and submit relevant images or videos. These plots are stored in a database and can be viewed and rated by other users.
+4. **AI-Based Recommendations**: Based on factors like climate, population, and nearby amenities, UrbanVista offers recommendations for how to best utilize available land.
+5. **3D Visualization**: NeRF/instant NeRF-based visualizations give users an immersive, real-time view of the plot, helping them make informed decisions about land use.
+
+### Solution architecture
+
+Diagram and step-by-step description of the flow of our solution:
+
+![UrbanVista Go Green](./assets/UrbanVista_Diagram.png)
+
+
+### Solution demo video
+
+[![Watch the video](./assets/thumbnail.jpg)](https://youtu.be/vOgCOoy_Bx0)
+
+
+### Project development roadmap
+
+In the future we plan to...
+
+See below for our proposed schedule on next steps after Call for Code 2024 submission.
+
+![Roadmap](./assets/Timeline.png)
+
+## How to Run the Project
+
+1. Clone the repository.
+2. Install dependencies:
+```bash
+   pip install -r requirements.txt
+   npm install
+   ```
+3. Set up MongoDB and IBM Watsonx API credentials in your environment.
+4. Run the development servers:
+```bash
+   npm run dev
+   python backend.py
+   ```
+5. Access the frontend at localhost:3000 and explore features like plot search, weather dashboard, and 3D visualizations. 
