@@ -23,6 +23,8 @@ from bson import json_util
 import re
 from gradio_client import Client
 import shutil
+from llama_index.core import PromptTemplate
+from llama_index.llms import IBMWatsonxLLM
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
@@ -48,7 +50,8 @@ load_dotenv()
 # Watson AI setup
 WATSON_API_KEY = os.getenv("API_KEY")
 NLU_URL = os.getenv("NLU_URL")
-
+IBM_API_KEY_LLM = os.getenv("IBM_API_KEY_LLM")
+IBM_URL_LLM = os.getenv("IBM_URL_LLM")
 # Gemini API setup
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 
@@ -67,6 +70,9 @@ nlu = NaturalLanguageUnderstandingV1(
     authenticator=authenticator
 )
 nlu.set_service_url(NLU_URL)
+
+# Set up IBM Watsonx client
+watsonx_llm = IBMWatsonxLLM(api_key=IBM_API_KEY, endpoint_url=IBM_URL)
 
 # Set up Gemini
 genai.configure(api_key=GEMINI_API_KEY)
@@ -174,7 +180,7 @@ def summarize_nearby_places(nearby_places):
 
 def get_recommendations(lat, lon, population, climate, nearby_places_summary, poll_data, size):
     places_description = ", ".join([f"{place}: {count}" for place, count in nearby_places_summary.items()])
-    logger.info(places_description)
+    logger.info(f"Nearby Places Description: {places_description}")
 
     # Process poll data
     poll_summary = summarize_poll_data(poll_data)
@@ -199,8 +205,6 @@ def get_recommendations(lat, lon, population, climate, nearby_places_summary, po
     4. Be suitable for the climate conditions
     5. Match the population density
     6. Be appropriate for the given plot size
-
-    For each suggestion, provide a brief one-line explanation of why it's recommended, considering both the area characteristics and public opinion.
     """
 
     try:
@@ -214,15 +218,19 @@ def get_recommendations(lat, lon, population, climate, nearby_places_summary, po
             )
         ).get_result()
 
-        logger.info(f"Watson NLU Response: {lat},{lon}")
+        logger.info(f"Watson NLU Response for Location: {lat},{lon}")
 
         # Extract relevant information from NLU response
         keywords = [keyword['text'] for keyword in nlu_response.get('keywords', [])]
         categories = [category['label'] for category in nlu_response.get('categories', [])]
         concepts = [concept['text'] for concept in nlu_response.get('concepts', [])]
 
-        # Prepare input for Gemini
-        gemini_input = f"""
+        logger.info(f"Keywords: {keywords}")
+        logger.info(f"Categories: {categories}")
+        logger.info(f"Concepts: {concepts}")
+
+        # Prepare input for Llama using the PromptTemplate
+        llama_input_template = """
         Based on the following analysis of an empty plot, provide 3-5 specific development recommendations:
 
         Location: Latitude {lat}, Longitude {lon}
@@ -233,45 +241,45 @@ def get_recommendations(lat, lon, population, climate, nearby_places_summary, po
         Public opinion: {poll_description}
 
         Key aspects identified:
-        Keywords: {', '.join(keywords)}
-        Categories: {', '.join(categories)}
-        Concepts: {', '.join(concepts)}
+        Keywords: {keywords}
+        Categories: {categories}
+        Concepts: {concepts}
 
         For each recommendation, provide:
         1. A brief one-line explanation of why it's suitable, considering area characteristics and public opinion.
         2. A detailed description of how the development would look and fit into the surrounding area, explicitly mentioning how it utilizes the {size} square meter plot size.
 
         Format your response as a JSON object where each key is a short title for the recommendation, and the value is an object containing "explanation" and "description" fields.
-        strictly follow this format
-        Example:
-        {{
-            "Community Center": {{
-                "explanation": "Addresses the lack of social spaces and aligns with public desire for community facilities",
-                "description": "A modern two-story building utilizing the entire {size} square meter plot. The exterior features a mix of brick and wood paneling, with a spacious parking area. Inside, there are multipurpose rooms, a gym, and a cafeteria. The remaining space is used for landscaping, including walking paths and a small playground, maximizing the use of the {size} square meter area."
-            }},
-            "Green Park": {{
-                "explanation": "Enhances environmental quality and meets the demand for open spaces in a densely populated area",
-                "description": "A sprawling park covering the full {size} square meters with winding paths, mature trees, and open grassy areas. The park's layout is designed to make optimal use of the {size} square meter plot, featuring a central fountain, flower gardens, benches, and a dedicated area for outdoor fitness equipment. The park incorporates native plants and rainwater collection systems to maximize sustainability within the given area."
-            }}
-        }}
         """
 
-        # Call Gemini API
-        model = genai.GenerativeModel('gemini-pro')
-        response = model.generate_content(gemini_input)
+        # Initialize the prompt template
+        prompt_template = PromptTemplate(template=llama_input_template)
+        
+        # Format the prompt with the extracted NLU data and the provided plot data
+        prompt = prompt_template.format(
+            lat=lat, 
+            lon=lon, 
+            population=population, 
+            climate=climate, 
+            places_description=places_description,
+            size=size, 
+            poll_description=poll_description,
+            keywords=', '.join(keywords),
+            categories=', '.join(categories),
+            concepts=', '.join(concepts)
+        )
 
-        json_string = re.sub(r'```json\s*|\s*```', '', response.text)
-        try:
-            recommendations = json.loads(json_string)
-            print(recommendations)
-        except json.JSONDecodeError:
-            logger.error(f"Error parsing Gemini response as JSON: {json_string}")
-            recommendations = {}
+        # Generate a response using the Llama model
+        response = watsonx_llm.complete(prompt)
+        logger.info(f"Generated response from Llama: {response['text']}")
 
-        return recommendations
+        # Optionally, parse the response as JSON
+        return response['text']
+
     except Exception as e:
         logger.error(f"Error in get_recommendations: {str(e)}")
         return f"Error generating recommendations. Please try again later. Error details: {str(e)}"
+
         
 def summarize_poll_data(poll_data):
     summary = {}
